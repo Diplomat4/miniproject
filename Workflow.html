@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Overview | MK Print Solutions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .workflow-page-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        .workflow-page-head {
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .workflow-page-head h1 {
+            font-size: 2.15rem;
+            color: var(--text-main);
+            margin-bottom: 0.45rem;
+        }
+
+        .workflow-page-head p {
+            color: var(--text-sub);
+            font-size: 1rem;
+        }
+
+        .wf-stage-rail {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .wf-stage-chip {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #bfdbfe;
+            background: #13203a;
+        }
+
+        .wf-carousel-wrap {
+            display: grid;
+            grid-template-columns: 56px minmax(0, 1fr) 56px;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 1.1rem;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+        }
+
+        .wf-control {
+            width: 46px;
+            height: 46px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #16233a;
+            color: #dbeafe;
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .wf-control:hover {
+            transform: scale(1.06);
+            background: #1f2f4d;
+            border-color: #60a5fa;
+        }
+
+        .wf-control:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .wf-viewport {
+            position: relative;
+            width: 100%;
+            min-height: 360px;
+            overflow: hidden;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #0f172a, #0b1220);
+        }
+
+        .wf-slide {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: clamp(230px, 36vw, 340px);
+            min-height: 210px;
+            padding: 1rem 1rem 1.15rem;
+            border-radius: 14px;
+            border: 1px solid #334a72;
+            background: linear-gradient(180deg, #162746, #12203b);
+            color: var(--text-main);
+            box-shadow: 0 14px 24px rgba(0, 0, 0, 0.28);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.45s ease, opacity 0.35s ease, filter 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .wf-slide.is-active {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.45), 0 18px 34px rgba(30, 64, 175, 0.35);
+        }
+
+        .wf-slide.is-active:hover {
+            transform: translate(-50%, -50%) scale(1.03) !important;
+        }
+
+        .wf-slide-stage {
+            display: inline-flex;
+            align-self: flex-start;
+            padding: 0.25rem 0.55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(191, 219, 254, 0.35);
+            color: #bfdbfe;
+            font-size: 0.73rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .wf-slide-step {
+            margin-top: 0.9rem;
+            margin-bottom: auto;
+            font-size: 1.36rem;
+            font-weight: 800;
+            line-height: 1.2;
+            text-transform: capitalize;
+        }
+
+        .wf-slide-meta {
+            margin-top: 1.2rem;
+            color: #9fb0c8;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .wf-index {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+        }
+
+        @media (max-width: 860px) {
+            .wf-carousel-wrap {
+                grid-template-columns: 48px minmax(0, 1fr) 48px;
+                padding: 0.85rem;
+            }
+
+            .wf-viewport {
+                min-height: 330px;
+            }
+
+            .wf-slide {
+                width: clamp(210px, 72vw, 300px);
+                min-height: 200px;
+            }
+        }
+    </style>
+</head>
+<body class="homepage" id="top">
+    <header class="hp-header">
+        <div class="hp-header-inner">
+            <a href="Homepage.html" class="hp-logo">MK Print Solutions</a>
+            <div class="hp-search-wrap">
+                <input type="search" class="hp-search" placeholder="Search" aria-label="Search">
+                <span class="hp-search-icon" aria-hidden="true">&#128269;</span>
+            </div>
+            <nav class="hp-utils">
+                <a href="#" class="hp-util-link">Need Help? <span class="hp-phone">2023202027</span></a>
+                <a href="LOGIN/Login.html" class="hp-util-link"><span class="hp-icon">&#128100;</span> Sign in</a>
+                <a href="Dashboard.html" class="hp-btn hp-dashboard-btn"><span class="hp-icon">&#128202;</span> Dashboard</a>
+                <a href="#" class="hp-util-link"><span class="hp-icon">&#128722;</span> Cart</a>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="hp-nav">
+        <div class="hp-nav-inner">
+            <a href="Manuscript.html">Manuscript</a>
+            <a href="Prepress.html">Prepress</a>
+            <a href="Printing.html">Printing</a>
+            <a href="Binding.html">Post-press Stage</a>
+        </div>
+    </nav>
+
+    <main class="workflow-page-main">
+        <section class="workflow-page-head">
+            <h1>Workflow Overview</h1>
+            <p>Use the arrows to move cards. The active card stays centered and larger.</p>
+        </section>
+
+        <div class="wf-stage-rail" aria-hidden="true">
+            <span class="wf-stage-chip">MANUSCRIPT</span>
+            <span class="wf-stage-chip">PREPRESS</span>
+            <span class="wf-stage-chip">PRINTING</span>
+            <span class="wf-stage-chip">POST PRESS</span>
+        </div>
+
+        <section class="wf-carousel-wrap" aria-label="Workflow stage and sub-step carousel">
+            <button type="button" class="wf-control" id="wfPrevBtn" aria-label="Previous card">&#8249;</button>
+            <div class="wf-viewport" id="wfViewport">
+                <div id="wfTrack"></div>
+            </div>
+            <button type="button" class="wf-control" id="wfNextBtn" aria-label="Next card">&#8250;</button>
+        </section>
+        <p class="wf-index" id="wfIndexLabel" aria-live="polite"></p>
+    </main>
+
+    <footer class="site-footer" id="footerContact">
+        <div class="site-footer-inner">
+            <div>
+                <div class="footer-brand">MK Print Solutions</div>
+                <div class="footer-sub">Modular publication workflow &bull; Front-end prototype</div>
+            </div>
+            <div class="footer-links">
+                <a href="Homepage.html">Home</a>
+                <a href="Manuscript.html">Manuscript</a>
+                <a href="Prepress.html">Prepress</a>
+                <a href="Printing.html">Printing</a>
+                <a href="Binding.html">Post-press Stage</a>
+            </div>
+            <div class="footer-contact">
+                <div><strong>Contact</strong></div>
+                <div>Phone: 2023202027</div>
+                <div>Email: support@mkprint.com</div>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions by Karmakar, Seth, Mandal</div>
+    </footer>
+
+    <script>
+        (function() {
+            var cards = [
+                { stage: 'MANUSCRIPT', step: 'editing' },
+                { stage: 'MANUSCRIPT', step: 'proofreading' },
+                { stage: 'MANUSCRIPT', step: 'Approval' },
+                { stage: 'PREPRESS', step: 'layout' },
+                { stage: 'PREPRESS', step: 'preflighting' },
+                { stage: 'PREPRESS', step: 'imposition' },
+                { stage: 'PREPRESS', step: 'platemaking' },
+                { stage: 'PRINTING', step: 'make ready' },
+                { stage: 'PRINTING', step: 'Trial Print run' },
+                { stage: 'PRINTING', step: 'QC' },
+                { stage: 'POST PRESS', step: 'cutting/trimming' },
+                { stage: 'POST PRESS', step: 'folding' },
+                { stage: 'POST PRESS', step: 'binding' }
+            ];
+
+            var track = document.getElementById('wfTrack');
+            var prevBtn = document.getElementById('wfPrevBtn');
+            var nextBtn = document.getElementById('wfNextBtn');
+            var indexLabel = document.getElementById('wfIndexLabel');
+            if (!track || !prevBtn || !nextBtn || !indexLabel || !cards.length) return;
+
+            var activeIndex = 0;
+            var slides = [];
+
+            cards.forEach(function(card, i) {
+                var slide = document.createElement('article');
+                slide.className = 'wf-slide';
+                slide.setAttribute('role', 'group');
+                slide.setAttribute('aria-label', card.stage + ' - ' + card.step);
+                slide.innerHTML =
+                    '<span class="wf-slide-stage">' + card.stage + '</span>' +
+                    '<div class="wf-slide-step">' + card.step + '</div>' +
+                    '<div class="wf-slide-meta">Step ' + (i + 1) + ' of ' + cards.length + '</div>';
+
+                slide.addEventListener('click', function() {
+                    activeIndex = i;
+                    render();
+                });
+
+                track.appendChild(slide);
+                slides.push(slide);
+            });
+
+            function circularDelta(i, current, total) {
+                var delta = i - current;
+                if (delta > total / 2) delta -= total;
+                if (delta < -total / 2) delta += total;
+                return delta;
+            }
+
+            function render() {
+                slides.forEach(function(slide, i) {
+                    var delta = circularDelta(i, activeIndex, slides.length);
+                    var abs = Math.abs(delta);
+                    var x;
+                    var scale;
+                    var opacity;
+                    var blur;
+
+                    if (abs === 0) {
+                        x = 0;
+                        scale = 1;
+                        opacity = 1;
+                        blur = 0;
+                    } else if (abs === 1) {
+                        x = delta * 260;
+                        scale = 0.82;
+                        opacity = 0.6;
+                        blur = 0;
+                    } else if (abs === 2) {
+                        x = delta * 405;
+                        scale = 0.66;
+                        opacity = 0.25;
+                        blur = 0.5;
+                    } else {
+                        x = delta * 520;
+                        scale = 0.52;
+                        opacity = 0;
+                        blur = 1.5;
+                    }
+
+                    slide.style.transform = 'translate(-50%, -50%) translateX(' + x + 'px) scale(' + scale + ')';
+                    slide.style.opacity = String(opacity);
+                    slide.style.filter = 'blur(' + blur + 'px)';
+                    slide.style.zIndex = String(100 - abs);
+                    slide.classList.toggle('is-active', abs === 0);
+                    slide.setAttribute('aria-hidden', abs > 2 ? 'true' : 'false');
+                });
+
+                var current = cards[activeIndex];
+                indexLabel.textContent = current.stage + ' - ' + current.step + ' (' + (activeIndex + 1) + '/' + cards.length + ')';
+            }
+
+            function goNext() {
+                activeIndex = (activeIndex + 1) % cards.length;
+                render();
+            }
+
+            function goPrev() {
+                activeIndex = (activeIndex - 1 + cards.length) % cards.length;
+                render();
+            }
+
+            nextBtn.addEventListener('click', goNext);
+            prevBtn.addEventListener('click', goPrev);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') goNext();
+                if (e.key === 'ArrowLeft') goPrev();
+            });
+
+            render();
+        })();
+    </script>
+</body>
+</html>

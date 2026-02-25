@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK Print Solutions | End-to-End Workflow</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="Homepage.html" aria-label="Go to Homepage">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9V2h12v7"></path>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <path d="M6 14h12v8H6z"></path>
+            </svg>
+            MK Print Solutions
+        </a>
+
+        <div class="nav-links" aria-label="Primary navigation">
+            <a href="Homepage.html">Home</a>
+            <a href="Dashboard.html" aria-current="page">Dashboard</a>
+            <a href="#manuscriptWorkspace">Manuscripts</a>
+            <a href="#footerContact">Contact</a>
+        </div>
+
+        <div class="nav-right">
+            <span class="nav-meta">Mini Project by Mandal, Karmakar, Seth</span>
+            <a class="btn btn-secondary btn-sm" href="LOGIN/Login.html">Sign in</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <aside>
+            <div class="card" id="manuscriptWorkspace">
+                <h2>Manuscript Workspace</h2>
+
+                <p class="helper-text" style="margin-bottom: 1rem;">
+                    Upload a manuscript/proof as a new version and configure print options from the PDF overlay.
+                </p>
+                <p class="helper-text" id="msStatus" style="margin-bottom: 1rem;">
+                    Status: initializing...
+                </p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="msRole">Uploading as</label>
+                        <select id="msRole">
+                            <option value="Author">Author</option>
+                            <option value="Printer">Printer / Production</option>
+                            <option value="Editor">Editor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="msStage">Status</label>
+                        <select id="msStage">
+                            <option value="Draft">Draft</option>
+                            <option value="Proof Sent">Proof Sent</option>
+                            <option value="Approved">Approved</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="msFile">Manuscript / Proof File</label>
+                    <div class="dropzone" id="msDropzone" role="button" tabindex="0" aria-label="Upload manuscript file (drag and drop or click)">
+                        <div class="dropzone-title">Drag & drop your file here</div>
+                        <div class="dropzone-sub">or click to browse - PDF, DOCX, TXT, MD, RTF</div>
+                        <div class="dropzone-file" id="msSelectedFile">No file selected</div>
+                        <input type="file" id="msFile" accept=".pdf,.doc,.docx,.txt,.md,.rtf">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Uploaded File Preview</label>
+                    <div id="preview-container" style="display:flex; gap:12px; flex-wrap:wrap;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Print Options Summary</label>
+                    <div id="printOptionsSummary" class="helper-text">No print options selected yet.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="msNote">Notes / requested changes (optional)</label>
+                    <input type="text" id="msNote" placeholder="e.g. Fix margins in Chapter 3 and replace Figure 2.1">
+                </div>
+
+                <div class="btn-row">
+                    <button type="button" class="btn" id="msSaveBtn">Upload Manuscript</button>
+                    <button type="button" class="btn btn-secondary" id="msClearBtn">Clear Uploads</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Workflow Logic</h2>
+                <div class="helper-text">
+                    <p><strong>Manuscript:</strong> Editing, Proofreading, Approval.</p>
+                    <hr>
+                    <p><strong>Prepress:</strong> Layout, Preflighting, Imposition, Platemaking.</p>
+                    <hr>
+                    <p><strong>Printing:</strong> Make-ready, Trial Output, QC.</p>
+                    <hr>
+                    <p><strong>Post-press Stage:</strong> Cutting/Trimming, Folding, Binding.</p>
+                    <hr>
+                    <p><strong>Dispatch:</strong> Inspection, Packaging, Labelling, Distribution.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-val" id="totalJobs">0</div>
+                    <div class="stat-label">Active Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="prepressCount" style="color: var(--warning);">0</div>
+                    <div class="stat-label">In Prepress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="printCount" style="color: var(--primary);">0</div>
+                    <div class="stat-label">On Machine</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="dispatchCount" style="color: var(--success);">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Live Production Status</h2>
+                <div class="table-toolbar" aria-label="Job table tools">
+                    <div class="table-toolbar-left">
+                        <div class="form-group" style="margin:0;">
+                            <label class="sr-only" for="jobSearch">Search jobs</label>
+                            <input type="search" id="jobSearch" placeholder="Search by ID, client, title...">
+                        </div>
+                        <div class="form-group" style="margin:0; min-width: 200px;">
+                            <label class="sr-only" for="jobTypeFilter">Filter by type</label>
+                            <select id="jobTypeFilter">
+                                <option value="All">All types</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Trade">Trade</option>
+                                <option value="Promotional">Promotional</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0; min-width: 200px;">
+                            <label class="sr-only" for="jobStageFilter">Filter by stage</label>
+                            <select id="jobStageFilter">
+                                <option value="All">All stages</option>
+                                <option value="Manuscript">Manuscript</option>
+                                <option value="Prepress">Prepress</option>
+                                <option value="Printing">Printing</option>
+                                <option value="Post-press Stage">Post-press Stage</option>
+                                <option value="Dispatch">Dispatch</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-toolbar-right">
+                        <div class="form-group" style="margin:0; min-width: 190px;">
+                            <label class="sr-only" for="jobSort">Sort</label>
+                            <select id="jobSort">
+                                <option value="Newest">Newest first</option>
+                                <option value="Oldest">Oldest first</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="jobsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Job Details</th>
+                                <th>Type</th>
+                                <th>Current Stage</th>
+                                <th>Visual Workflow</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="site-footer" id="footerContact">
+        <div class="site-footer-inner">
+            <div>
+                <div class="footer-brand">MK Print Solutions</div>
+                <div class="footer-sub">End-to-end publication workflow - Front-end prototype</div>
+            </div>
+            <div class="footer-links">
+                <a href="Homepage.html">Home</a>
+                <a href="Dashboard.html">Dashboard</a>
+                <a href="LOGIN/Login.html">Sign in</a>
+                <a href="#manuscriptWorkspace">Manuscripts</a>
+            </div>
+            <div class="footer-contact">
+                <div><strong>Contact</strong></div>
+                <div>Phone: 2023202027</div>
+                <div>Email: support@mkprint.com</div>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions by Karmakar, Seth, Mandal</div>
+    </footer>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-relevant="additions"></div>
+
+    <div class="modal-overlay" id="appModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalBody">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Confirm</div>
+                <button class="icon-btn" type="button" id="modalCloseBtn" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">Are you sure?</div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="modalCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-danger btn-sm" id="modalConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="printOptionsModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="printOptionsTitle">
+            <div class="modal-header">
+                <div class="modal-title" id="printOptionsTitle">Configure Print Options</div>
+                <button class="icon-btn" type="button" id="printOptionsCloseBtn" aria-label="Close print options">X</button>
+            </div>
+            <div class="modal-body">
+                <p class="helper-text" style="margin-bottom: 0.85rem;">Choose exact print requirements for this uploaded PDF.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poProjectType">Project Type</label>
+                        <select id="poProjectType">
+                            <option value="Auto" selected>Auto (Based on Options)</option>
+                            <option value="Academic">Academic</option>
+                            <option value="Trade">Trade</option>
+                            <option value="Promotional">Promotional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poPaperSize">Paper Size</label>
+                        <select id="poPaperSize">
+                            <option value="A3">A3</option>
+                            <option value="A4" selected>A4</option>
+                            <option value="A5">A5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poColorMode">Color Module</label>
+                        <select id="poColorMode">
+                            <option value="Monochrome">Monochrome (B/W)</option>
+                            <option value="CMYK">CMYK Full Color</option>
+                            <option value="Spot Color">Spot Color</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poFinish">Paper Finish</label>
+                        <select id="poFinish">
+                            <option value="Gloss">Gloss</option>
+                            <option value="Satin">Satin</option>
+                            <option value="Super Calendar">Super Calendar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poGsm">Paper GSM</label>
+                        <select id="poGsm">
+                            <option value="60">60</option>
+                            <option value="70">70</option>
+                            <option value="80" selected>80</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poOrientation">Orientation</label>
+                        <select id="poOrientation">
+                            <option value="Portrait">Portrait</option>
+                            <option value="Landscape">Landscape</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poQuantity">Quantity</label>
+                        <input type="number" id="poQuantity" min="1" value="100">
+                    </div>
+                </div>
+                <p id="poPromoMsg" class="helper-text" style="margin-top: 0.25rem; color: var(--success);">
+                    Promo unlocked above quantity 2026: Free limited edition bookmarks.
+                </p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="printOptionsCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-sm" id="printOptionsApplyBtn">Apply Options</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<div class="cursor-follower"></div>
+
+</html>
+
+
+

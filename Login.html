@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MK Print Solutions | Secure Access</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="Login.css">
+    <script src="Login.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="../Homepage.html" aria-label="Go to Homepage">MK Print Solutions</a>
+
+        <div class="nav-links" aria-label="Primary navigation">
+            <a href="../Homepage.html">Home</a>
+            <a href="../Dashboard.html">Dashboard</a>
+            <a href="#footerContact">Contact</a>
+        </div>
+
+        <div class="nav-right">
+            <span class="nav-meta">Secure MIS Access</span>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+                <h2 id="formTitle">Login</h2>
+                <p>Authorized personnel only</p>
+            </div>
+
+            <form id="authForm">
+
+                <div class="form-group" id="nameGroup" style="display:none;">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="e.g. Rahul Mandal">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="e.g. operator@mkprint.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter secure password" required>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    Login to Dashboard
+                </button>
+
+            </form>
+
+            <div class="toggle-section">
+                <span id="toggleText">New user?</span>
+                <button id="toggleBtn" class="link-btn">Register Here</button>
+            </div>
+
+            <div class="auth-message" id="authMessage"></div>
+
+        </div>
+
+    </div>
+
+    <footer class="site-footer" id="footerContact">
+        <div class="site-footer-inner">
+            <div>
+                <div class="footer-brand">MK Print Solutions</div>
+                <div class="footer-sub">Secure access â€¢ Front-end prototype</div>
+            </div>
+            <div class="footer-links">
+                <a href="../Homepage.html">Home</a>
+                <a href="../Dashboard.html">Dashboard</a>
+                <a href="Login.html">Sign in</a>
+            </div>
+            <div class="footer-contact">
+                <div><strong>Contact</strong></div>
+                <div>Phone: 2023202027</div>
+                <div>Email: support@mkprint.com</div>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions by Karmakar, Seth, Mandal</div>
+    </footer>
+
+</body>
+</html>
+
+
