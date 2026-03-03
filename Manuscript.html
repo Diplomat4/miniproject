@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -127,7 +127,7 @@
 <body class="homepage" id="top">
     <header class="hp-header">
         <div class="hp-header-inner">
-            <a href="index.html" class="hp-logo">MK Print Solutions</a>
+            <a href="Homepage.html" class="hp-logo">MK Print Solutions</a>
             <div class="hp-search-wrap">
                 <input type="search" class="hp-search" placeholder="Search" aria-label="Search">
                 <span class="hp-search-icon" aria-hidden="true">&#128269;</span>
@@ -135,17 +135,37 @@
             <nav class="hp-utils">
                 <a href="#" class="hp-util-link">Need Help? <span class="hp-phone">2023202027</span></a>
                 <a href="LOGIN/Login.html" class="hp-util-link"><span class="hp-icon">&#128100;</span> Sign in</a>
-                <a href="Dashboard.html" class="hp-btn hp-dashboard-btn"><span class="hp-icon">&#128202;</span> Dashboard</a>
                 <a href="#" class="hp-util-link"><span class="hp-icon">&#128722;</span> Cart</a>
             </nav>
         </div>
     </header>
-    <nav class="hp-nav">
-        <div class="hp-nav-inner">
-            <a href="Manuscript.html" style="color: var(--primary); font-weight: 700;">Manuscript</a>
-            <a href="Prepress.html">Prepress</a>
-            <a href="Printing.html">Printing</a>
-            <a href="postpress.html">Post-press Stage</a>
+        <nav class="hp-nav">
+        <div class="hp-nav-inner hp-nav-main">
+            <a href="Homepage.html" class="hp-main-link">Home</a>
+            <a href="AboutUs.html" class="hp-main-link">About Us</a>
+            <div class="hp-menu-item hp-menu-dropdown">
+                <a href="javascript:void(0)" class="hp-main-link hp-main-link-active" aria-haspopup="true" aria-expanded="false">Services</a>
+                <div class="hp-dropdown" role="menu" aria-label="Services dropdown">
+                    <a href="Manuscript.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Manuscript</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                    <a href="Prepress.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Prepress</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                    <a href="Printing.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Printing</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                    <a href="Binding.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Post-press Stage</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                </div>
+            </div>
+            <a href="DashboardNew.html" class="hp-main-link">Dashboard</a>
+            <a href="ContactUs.html" class="hp-main-link">Contact Us</a>
         </div>
     </nav>
     <main>
@@ -163,12 +183,12 @@
                 <div class="footer-brand">MK Print Solutions</div>
                 <div class="footer-sub">Modular publication workflow &bull; Front-end prototype</div>
             </div>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="Manuscript.html">Manuscript</a>
-                <a href="Prepress.html">Prepress</a>
-                <a href="Printing.html">Printing</a>
-                <a href="postpress.html">Post-press Stage</a>
+                        <div class="footer-links">
+                <a href="Homepage.html">Home</a>
+                <a href="AboutUs.html">About Us</a>
+                <a href="Services.html">Services</a>
+                <a href="DashboardNew.html">Dashboard</a>
+                <a href="ContactUs.html">Contact Us</a>
             </div>
             <div class="footer-contact">
                 <div><strong>Contact</strong></div>
@@ -182,10 +202,7 @@
     <script>
         (function () {
             var steps = [
-                { title: "Manuscript", layout: "one", images: ["images/MANUSCRIPT EDITING.jpg"], paragraphs: ["Manuscript intake, editorial validation, and structural checks are completed here before detailed prepress execution begins.", "This stage ensures content readiness, approval integrity, and clean handoff quality for design, proofing, and plate preparation."] },
-                { title: "Designing & Page Planning", layout: "two", images: ["images/DesigningandPagePlanning1.png", "images/DesigningandPagePlanning2.png"], paragraphs: ["At MK Print Solutions, we offer creative and structured designing and page planning services to bring every book to life with clarity and visual appeal. Our team specializes in cover design, interior layout, typography selection, and formatting that align with the book's theme and target audience. We ensure proper margin setting, alignment, pagination, and chapter structuring for a smooth reading experience.", "We focus on balanced layouts, consistent styling, and effective use of images, tables, and graphics to enhance readability and aesthetics. Our page planning ensures optimal space utilization and print efficiency, reducing errors and production costs. With attention to detail and adherence to publishing standards, we deliver well-organized, professional, and press-ready designs."] },
-                { title: "Proofing", layout: "two", images: ["images/Proofing1.png", "images/Proofing2.png"], paragraphs: ["At MK Print Solutions, we provide accurate and reliable proofing services to ensure every detail is perfected before printing. Our process includes thorough content verification, layout checking, font consistency, color accuracy, and alignment review to eliminate errors at every stage. We offer both digital and hardcopy proofs, allowing clients to review and approve the final output with confidence.", "Using calibrated color management systems, we ensure that the proof closely matches the final printed result. Our team carefully checks for typographical errors, image quality, pagination, and overall design consistency. With a strong focus on precision, quality control, and quick turnaround, we help deliver flawless, press-ready files that meet professional publishing standards."] },
-                { title: "Plate Making", layout: "two", images: ["images/Plate Making1.png", "images/Plate Making2.png"], paragraphs: ["At MK Print Solutions, we provide advanced plate making services to ensure accurate and high-quality print reproduction. Using modern CTP (Computer-to-Plate) technology, we directly transfer digital files onto printing plates with precision, eliminating errors and maintaining sharp image and text clarity. Our process ensures proper imposition, registration, and color separation for consistent results on press.", "We use high-quality plates and maintain strict quality control to ensure durability, accurate ink transfer, and minimal wastage during printing. Our team carefully checks every plate for alignment, dot accuracy, and defects before dispatch. With efficient workflows and fast turnaround, we deliver reliable, press-ready plates that meet professional printing standards."] }
+                { title: "Manuscript", layout: "one", images: ["images/MANUSCRIPT EDITING.jpg"], paragraphs: ["Manuscript intake, editorial validation, and structural checks are completed here before detailed prepress execution begins.", "This stage ensures content readiness, approval integrity, and clean handoff quality for design, proofing, and plate preparation."] }
             ];
 
             var card = document.getElementById("stepCard");
@@ -211,7 +228,7 @@
             }
 
             function nextStep() {
-                if (locked) return;
+                if (locked || steps.length < 2) return;
                 locked = true;
                 card.classList.add("is-exit");
                 setTimeout(function () {
@@ -221,8 +238,6 @@
                     locked = false;
                 }, 280);
             }
-
-            card.addEventListener("click", function () { nextStep(); });
             card.addEventListener("click", function (e) {
                 var img = e.target.closest(".step-img-wrap img");
                 if (!img) return;
@@ -237,6 +252,12 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
 
 
 

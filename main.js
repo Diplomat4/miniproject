@@ -939,7 +939,7 @@ function initNewOrderCreation() {
 
     if (backHomeBtn) {
         backHomeBtn.addEventListener('click', () => {
-            window.location.href = 'index.html';
+            window.location.href = 'Homepage.html';
         });
     }
 

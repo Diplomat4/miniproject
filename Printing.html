@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -127,7 +127,7 @@
 <body class="homepage" id="top">
     <header class="hp-header">
         <div class="hp-header-inner">
-            <a href="index.html" class="hp-logo">MK Print Solutions</a>
+            <a href="Homepage.html" class="hp-logo">MK Print Solutions</a>
             <div class="hp-search-wrap">
                 <input type="search" class="hp-search" placeholder="Search" aria-label="Search">
                 <span class="hp-search-icon" aria-hidden="true">&#128269;</span>
@@ -135,17 +135,37 @@
             <nav class="hp-utils">
                 <a href="#" class="hp-util-link">Need Help? <span class="hp-phone">2023202027</span></a>
                 <a href="LOGIN/Login.html" class="hp-util-link"><span class="hp-icon">&#128100;</span> Sign in</a>
-                <a href="Dashboard.html" class="hp-btn hp-dashboard-btn"><span class="hp-icon">&#128202;</span> Dashboard</a>
                 <a href="#" class="hp-util-link"><span class="hp-icon">&#128722;</span> Cart</a>
             </nav>
         </div>
     </header>
-    <nav class="hp-nav">
-        <div class="hp-nav-inner">
-            <a href="Manuscript.html">Manuscript</a>
-            <a href="Prepress.html">Prepress</a>
-            <a href="Printing.html" style="color: var(--primary); font-weight: 700;">Printing</a>
-            <a href="postpress.html">Post-press Stage</a>
+        <nav class="hp-nav">
+        <div class="hp-nav-inner hp-nav-main">
+            <a href="Homepage.html" class="hp-main-link">Home</a>
+            <a href="AboutUs.html" class="hp-main-link">About Us</a>
+            <div class="hp-menu-item hp-menu-dropdown">
+                <a href="javascript:void(0)" class="hp-main-link hp-main-link-active" aria-haspopup="true" aria-expanded="false">Services</a>
+                <div class="hp-dropdown" role="menu" aria-label="Services dropdown">
+                    <a href="Manuscript.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Manuscript</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                    <a href="Prepress.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Prepress</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                    <a href="Printing.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Printing</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                    <a href="Binding.html" class="hp-dropdown-link" role="menuitem">
+                        <span>Post-press Stage</span>
+                        <span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span>
+                    </a>
+                </div>
+            </div>
+            <a href="DashboardNew.html" class="hp-main-link">Dashboard</a>
+            <a href="ContactUs.html" class="hp-main-link">Contact Us</a>
         </div>
     </nav>
     <main>
@@ -163,12 +183,12 @@
                 <div class="footer-brand">MK Print Solutions</div>
                 <div class="footer-sub">Modular publication workflow &bull; Front-end prototype</div>
             </div>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="Manuscript.html">Manuscript</a>
-                <a href="Prepress.html">Prepress</a>
-                <a href="Printing.html">Printing</a>
-                <a href="postpress.html">Post-press Stage</a>
+                        <div class="footer-links">
+                <a href="Homepage.html">Home</a>
+                <a href="AboutUs.html">About Us</a>
+                <a href="Services.html">Services</a>
+                <a href="DashboardNew.html">Dashboard</a>
+                <a href="ContactUs.html">Contact Us</a>
             </div>
             <div class="footer-contact">
                 <div><strong>Contact</strong></div>
@@ -236,6 +256,12 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
 
 
 

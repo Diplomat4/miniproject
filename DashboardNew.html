@@ -1,0 +1,492 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK Print Solutions | End-to-End Workflow</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="index.html" aria-label="Go to Homepage">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9V2h12v7"></path>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <path d="M6 14h12v8H6z"></path>
+            </svg>
+            MK Print Solutions
+        </a>
+
+        <div class="nav-links" aria-label="Primary navigation">
+            <a href="Homepage.html">Home</a>
+            <a href="AboutUs.html">About Us</a>
+            <div class="nav-dropdown">
+                <a href="javascript:void(0)" aria-haspopup="true" aria-expanded="false">Services</a>
+                <div class="nav-dropdown-menu" role="menu" aria-label="Services dropdown">
+                    <a href="Manuscript.html" role="menuitem">Manuscript</a>
+                    <a href="Prepress.html" role="menuitem">Prepress</a>
+                    <a href="Printing.html" role="menuitem">Printing</a>
+                    <a href="Binding.html" role="menuitem">Post-press Stage</a>
+                </div>
+            </div>
+            <a href="DashboardNew.html" aria-current="page">Dashboard</a>
+            <a href="#" id="nocOpenWindowLink">New Order Creation</a>
+            <a href="ContactUs.html">Contact Us</a>
+        </div>
+
+        <div class="nav-right">
+            <span class="nav-meta">Created by: Mandal & Karmakar</span>
+            <a class="btn btn-secondary btn-sm" href="LOGIN/Login.html">Sign in</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <aside>
+            <div class="card">
+                <h2>Workflow Logic</h2>
+                <div class="helper-text">
+                    <p><strong>Manuscript:</strong> Editing, Proofreading, Approval.</p>
+                    <hr>
+                    <p><strong>Prepress:</strong> Layout, Preflighting, Imposition, Platemaking.</p>
+                    <hr>
+                    <p><strong>Printing:</strong> Make-ready, Trial Output, QC.</p>
+                    <hr>
+                    <p><strong>Post-press Stage:</strong> Cutting/Trimming, Folding, Binding.</p>
+                    <hr>
+                    <p><strong>Dispatch:</strong> Inspection, Packaging, Labelling, Distribution.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-val" id="totalJobs">0</div>
+                    <div class="stat-label">Active Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="prepressCount" style="color: var(--warning);">0</div>
+                    <div class="stat-label">In Prepress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="printCount" style="color: var(--primary);">0</div>
+                    <div class="stat-label">On Machine</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="dispatchCount" style="color: var(--success);">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Live Production Status</h2>
+                <div class="table-toolbar" aria-label="Job table tools">
+                    <div class="table-toolbar-left">
+                        <div class="form-group" style="margin:0;">
+                            <label class="sr-only" for="jobSearch">Search jobs</label>
+                            <input type="search" id="jobSearch" placeholder="Search by ID, client, title...">
+                        </div>
+                        <div class="form-group" style="margin:0; min-width: 200px;">
+                            <label class="sr-only" for="jobTypeFilter">Filter by type</label>
+                            <select id="jobTypeFilter">
+                                <option value="All">All types</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Trade">Trade</option>
+                                <option value="Promotional">Promotional</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0; min-width: 200px;">
+                            <label class="sr-only" for="jobStageFilter">Filter by stage</label>
+                            <select id="jobStageFilter">
+                                <option value="All">All stages</option>
+                                <option value="Manuscript">Manuscript</option>
+                                <option value="Prepress">Prepress</option>
+                                <option value="Printing">Printing</option>
+                                <option value="Post-press Stage">Post-press Stage</option>
+                                <option value="Dispatch">Dispatch</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-toolbar-right">
+                        <div class="form-group" style="margin:0; min-width: 190px;">
+                            <label class="sr-only" for="jobSort">Sort</label>
+                            <select id="jobSort">
+                                <option value="Newest">Newest first</option>
+                                <option value="Oldest">Oldest first</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="jobsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Job Details</th>
+                                <th>Type</th>
+                                <th>Current Stage</th>
+                                <th>Visual Workflow</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <section class="card noc-root" id="newOrderCreationTab" aria-label="New order creation workflow">
+                <div class="noc-title-row">
+                    <div class="noc-title-box">
+                        <h2>New Order Creation</h2>
+                    </div>
+                    <button type="button" class="icon-btn noc-window-close" id="nocWindowCloseBtn" aria-label="Close new order creation window">&times;</button>
+                </div>
+                <p class="noc-subtitle-box">Premium frontend workflow for manuscript preparation, cost estimation, and payment simulation.</p>
+
+                <div class="noc-step is-active" id="nocStepWorkspace">
+                    <div class="noc-grid">
+                        <article class="noc-card">
+                            <h3>Manuscript Workspace</h3>
+                            <p class="helper-text">Upload manuscript files for this new order.</p>
+                            <div class="form-group">
+                                <label for="nocUploadFile">Manuscript / Proof File</label>
+                                <div class="dropzone" id="nocUploadDropzone" role="button" tabindex="0" aria-label="Upload order manuscript file">
+                                    <div class="dropzone-title">Drag &amp; drop your file here</div>
+                                    <div class="dropzone-sub">or click to browse - PDF only</div>
+                                    <div class="dropzone-file" id="nocSelectedFile">No file selected</div>
+                                    <input type="file" id="nocUploadFile" accept=".pdf,application/pdf">
+                                </div>
+                                <p class="noc-upload-required" id="nocUploadRequiredMsg" hidden>Upload required</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Uploaded File Preview</label>
+                                <div id="nocPreviewContainer" class="noc-preview-grid"></div>
+                            </div>
+                        </article>
+
+                        <article class="noc-card">
+                            <h3>Print Preparation Workspace</h3>
+                            <p class="helper-text">Review references before estimating production cost.</p>
+                            <div class="noc-image-grid">
+                                <figure class="noc-image-wrap">
+                                    <img src="images/layout.jpg" alt="Layout planning reference">
+                                </figure>
+                                <figure class="noc-image-wrap">
+                                    <img src="images/proofreading.jpg" alt="Proofing reference">
+                                </figure>
+                            </div>
+                            <div class="noc-note">
+                                Finalize page flow, margins, image quality, and print-readiness checks.
+                            </div>
+                            <button type="button" class="btn noc-cta" id="nocProceedToCalcBtn">Proceed to Cost Calculation</button>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="noc-step" id="nocStepCalc">
+                    <div class="noc-grid">
+                        <article class="noc-card">
+                            <h3>Cost Calculation</h3>
+                            <div class="noc-calc-grid">
+                                <div class="form-group">
+                                    <label for="nocProductType">Product Type</label>
+                                    <select id="nocProductType">
+                                        <option value="Trade">Trade</option>
+                                        <option value="Photo Book">Photo Book</option>
+                                        <option value="Magazine">Magazine</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocSizeOrientation">Size &amp; Orientation</label>
+                                    <select id="nocSizeOrientation">
+                                        <option value="6x9 Portrait">6x9 Portrait</option>
+                                        <option value="8x10 Portrait">8x10 Portrait</option>
+                                        <option value="10x8 Landscape">10x8 Landscape</option>
+                                        <option value="12x12 Square">12x12 Square</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocPaperType">Paper Type + GSM</label>
+                                    <select id="nocPaperType">
+                                        <option value="Uncoated 70">Uncoated 70 GSM</option>
+                                        <option value="Uncoated 90">Uncoated 90 GSM</option>
+                                        <option value="Matte 120">Matte 120 GSM</option>
+                                        <option value="Gloss 150">Gloss 150 GSM</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocCoverType">Cover Type</label>
+                                    <select id="nocCoverType">
+                                        <option value="Softcover">Softcover</option>
+                                        <option value="Hardcover">Hardcover</option>
+                                        <option value="Imagewrap">Imagewrap</option>
+                                        <option value="Dust Jacket">Dust Jacket</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocCoverFinish">Cover Finish</label>
+                                    <select id="nocCoverFinish">
+                                        <option value="Matte">Matte</option>
+                                        <option value="Gloss">Gloss</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocPrintingType">Printing Type</label>
+                                    <select id="nocPrintingType">
+                                        <option value="Digital">Digital</option>
+                                        <option value="Offset">Offset</option>
+                                        <option value="Web">Web</option>
+                                        <option value="Sheetfed">Sheetfed</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocColorMode">Color Mode</label>
+                                    <select id="nocColorMode">
+                                        <option value="B&W">B&amp;W</option>
+                                        <option value="Color">Color</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocBindingType">Binding Type</label>
+                                    <select id="nocBindingType">
+                                        <option value="Perfect Bound">Perfect Bound</option>
+                                        <option value="Saddle Stitch">Saddle Stitch</option>
+                                        <option value="Case Bound">Case Bound</option>
+                                        <option value="Spiral">Spiral</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocPageCount">Page Count</label>
+                                    <input type="number" id="nocPageCount" min="20" value="120">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocQuantity">Quantity</label>
+                                    <input type="number" id="nocQuantity" min="1" value="300">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="noc-card">
+                            <h3>Estimation</h3>
+                            <div class="noc-price-metric">
+                                <span>Final Job Cost</span>
+                                <strong id="nocTotalCost">INR 0.00</strong>
+                            </div>
+                            <div class="noc-price-row">
+                                <span>Cost Per Copy</span>
+                                <strong id="nocCostPerCopy">INR 0.00</strong>
+                            </div>
+                            <div class="noc-breakdown" id="nocBreakdown"></div>
+                            <button type="button" class="btn noc-cta" id="nocProceedToPayBtn">Proceed to Payment</button>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="noc-step" id="nocStepPayment">
+                    <article class="noc-card">
+                        <h3>Payment</h3>
+                        <div class="noc-price-metric noc-price-metric-pay">
+                            <span>Payable Total</span>
+                            <strong id="nocPayableCost">INR 0.00</strong>
+                        </div>
+                        <div class="noc-payment-grid">
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="cod" checked>
+                                Cash on Delivery
+                            </label>
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="upi">
+                                UPI
+                            </label>
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="card">
+                                Card
+                            </label>
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="netbanking">
+                                Net Banking
+                            </label>
+                        </div>
+
+                        <div class="noc-payment-pane" id="nocPayPaneCod">
+                            COD selected. Amount will be collected on delivery.
+                        </div>
+                        <div class="noc-payment-pane" id="nocPayPaneUpi" hidden>
+                            <p>Scan QR to pay:</p>
+                            <img id="nocUpiQr" class="noc-upi-qr" alt="UPI QR code">
+                            <p>UPI ID: <strong id="nocUpiId">mkprint@upi</strong></p>
+                        </div>
+                        <div class="noc-payment-pane" id="nocPayPaneCard" hidden>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="nocCardName">Cardholder Name</label>
+                                    <input type="text" id="nocCardName" placeholder="Name on card">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocCardNumber">Card Number</label>
+                                    <input type="text" id="nocCardNumber" placeholder="XXXX XXXX XXXX XXXX">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="noc-payment-pane" id="nocPayPaneNet" hidden>
+                            <div class="form-group" style="max-width:320px;">
+                                <label for="nocBankName">Select Bank</label>
+                                <select id="nocBankName">
+                                    <option value="SBI">State Bank of India</option>
+                                    <option value="HDFC">HDFC Bank</option>
+                                    <option value="ICICI">ICICI Bank</option>
+                                    <option value="AXIS">Axis Bank</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn noc-cta" id="nocCompletePaymentBtn">Complete Payment</button>
+                    </article>
+                </div>
+
+                <div class="noc-step" id="nocStepSuccess">
+                    <article class="noc-card noc-success">
+                        <h3>Payment Successful</h3>
+                        <p>Your new order has been created and queued for production.</p>
+                        <div class="noc-price-metric noc-price-metric-pay">
+                            <span>Confirmed Total</span>
+                            <strong id="nocConfirmedCost">INR 0.00</strong>
+                        </div>
+                        <div class="noc-details" id="nocSuccessDetails"></div>
+                        <button type="button" class="btn noc-cta" id="nocBackHomeBtn">Return to Home Screen</button>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="site-footer" id="footerContact">
+        <div class="site-footer-inner">
+            <div>
+                <div class="footer-brand">MK Print Solutions</div>
+                <div class="footer-sub">End-to-end publication workflow - Front-end prototype</div>
+            </div>
+                        <div class="footer-links">
+                <a href="Homepage.html">Home</a>
+                <a href="AboutUs.html">About Us</a>
+                <a href="Services.html">Services</a>
+                <a href="DashboardNew.html">Dashboard</a>
+                <a href="ContactUs.html">Contact Us</a>
+            </div>
+            <div class="footer-contact">
+                <div><strong>Contact</strong></div>
+                <div>Phone: 2023202027</div>
+                <div>Email: support@mkprint.com</div>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
+    </footer>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-relevant="additions"></div>
+
+    <div class="modal-overlay" id="appModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalBody">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Confirm</div>
+                <button class="icon-btn" type="button" id="modalCloseBtn" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">Are you sure?</div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="modalCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-danger btn-sm" id="modalConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="printOptionsModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="printOptionsTitle">
+            <div class="modal-header">
+                <div class="modal-title" id="printOptionsTitle">Configure Print Options</div>
+                <button class="icon-btn" type="button" id="printOptionsCloseBtn" aria-label="Close print options">X</button>
+            </div>
+            <div class="modal-body">
+                <p class="helper-text" style="margin-bottom: 0.85rem;">Choose exact print requirements for this uploaded PDF.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poProjectType">Project Type</label>
+                        <select id="poProjectType">
+                            <option value="Auto" selected>Auto (Based on Options)</option>
+                            <option value="Academic">Academic</option>
+                            <option value="Trade">Trade</option>
+                            <option value="Promotional">Promotional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poPaperSize">Paper Size</label>
+                        <select id="poPaperSize">
+                            <option value="A3">A3</option>
+                            <option value="A4" selected>A4</option>
+                            <option value="A5">A5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poColorMode">Color Module</label>
+                        <select id="poColorMode">
+                            <option value="Monochrome">Monochrome (B/W)</option>
+                            <option value="CMYK">CMYK Full Color</option>
+                            <option value="Spot Color">Spot Color</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poFinish">Paper Finish</label>
+                        <select id="poFinish">
+                            <option value="Gloss">Gloss</option>
+                            <option value="Satin">Satin</option>
+                            <option value="Super Calendar">Super Calendar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poGsm">Paper GSM</label>
+                        <select id="poGsm">
+                            <option value="60">60</option>
+                            <option value="70">70</option>
+                            <option value="80" selected>80</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poOrientation">Orientation</label>
+                        <select id="poOrientation">
+                            <option value="Portrait">Portrait</option>
+                            <option value="Landscape">Landscape</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="poQuantity">Quantity</label>
+                        <input type="number" id="poQuantity" min="1" value="100">
+                    </div>
+                </div>
+                <p id="poPromoMsg" class="helper-text" style="margin-top: 0.25rem; color: var(--success);">
+                    Promo unlocked above quantity 2026: Free limited edition bookmarks.
+                </p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="printOptionsCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-sm" id="printOptionsApplyBtn">Apply Options</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<div class="cursor-follower"></div>
+
+</html>
+
+
+
+
+

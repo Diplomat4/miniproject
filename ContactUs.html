@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | MK Print Solutions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="homepage" id="top">
+    <header class="hp-header">
+        <div class="hp-header-inner">
+            <a href="Homepage.html" class="hp-logo">MK Print Solutions</a>
+            <div class="hp-search-wrap">
+                <input type="search" class="hp-search" placeholder="Search" aria-label="Search">
+                <span class="hp-search-icon" aria-hidden="true">&#128269;</span>
+            </div>
+            <nav class="hp-utils">
+                <a href="#" class="hp-util-link">Need Help? Contact Us <span class="hp-phone">2023202027</span></a>
+                <a href="LOGIN/Login.html" class="hp-util-link"><span class="hp-icon">&#128100;</span> Sign in</a>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="hp-nav">
+        <div class="hp-nav-inner hp-nav-main">
+            <a href="Homepage.html" class="hp-main-link">Home</a>
+            <a href="AboutUs.html" class="hp-main-link">About Us</a>
+            <div class="hp-menu-item hp-menu-dropdown">
+                <a href="javascript:void(0)" class="hp-main-link" aria-haspopup="true" aria-expanded="false">Services</a>
+                <div class="hp-dropdown" role="menu" aria-label="Services dropdown">
+                    <a href="Manuscript.html" class="hp-dropdown-link" role="menuitem"><span>Manuscript</span><span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span></a>
+                    <a href="Prepress.html" class="hp-dropdown-link" role="menuitem"><span>Prepress</span><span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span></a>
+                    <a href="Printing.html" class="hp-dropdown-link" role="menuitem"><span>Printing</span><span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span></a>
+                    <a href="Binding.html" class="hp-dropdown-link" role="menuitem"><span>Post-press Stage</span><span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span></a>
+                </div>
+            </div>
+            <a href="DashboardNew.html" class="hp-main-link">Dashboard</a>
+            <a href="ContactUs.html" class="hp-main-link hp-main-link-active">Contact Us</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="category-header">
+            <h1>Contact Us</h1>
+            <p>Reach MK Print Solutions for orders, workflow support, and production planning.</p>
+        </section>
+
+        <section class="contact-query-wrap">
+            <article class="contact-query-card">
+                <h2>Raise a Query</h2>
+                <form class="contact-query-form" id="contactQueryForm" action="#" method="post">
+                    <div class="form-group">
+                        <label for="queryName">Name</label>
+                        <input id="queryName" name="query_name" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="queryContact">Contact</label>
+                        <input id="queryContact" name="query_contact" type="tel" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="queryEmail">Email Address</label>
+                        <input id="queryEmail" name="query_email" type="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-sm">Submit Query</button>
+                </form>
+                <div class="query-success" id="querySuccess" hidden>
+                    <div class="query-success-icon" aria-hidden="true">
+                        <svg viewBox="0 0 120 120" role="img" aria-label="Success">
+                            <circle class="query-success-circle" cx="60" cy="60" r="45"></circle>
+                            <path class="query-success-tick" d="M36 62 L54 79 L86 45"></path>
+                        </svg>
+                    </div>
+                    <p>Your query is finaly submitted</p>
+                    <p>Your docket number is: <strong id="queryDocketNo"></strong></p>
+                    <p>Our team will contact you shortly.</p>
+                    <p>Thank you</p>
+                </div>
+            </article>
+        </section>
+
+        <section class="product-grid contact-info-grid">
+            <article class="product-card">
+                <div class="product-info">
+                    <h3 class="product-title">Phone</h3>
+                    <p class="product-price">2023202027</p>
+                </div>
+            </article>
+            <article class="product-card">
+                <div class="product-info">
+                    <h3 class="product-title">Email</h3>
+                    <p class="product-price">support@mkprint.com</p>
+                </div>
+            </article>
+            <article class="product-card">
+                <div class="product-info">
+                    <h3 class="product-title">Office Hours</h3>
+                    <p class="product-price">Mon-Sat, 9:00 AM - 7:00 PM</p>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="footerContact">
+        <div class="site-footer-inner">
+            <div>
+                <div class="footer-brand">MK Print Solutions</div>
+                <div class="footer-sub">Modular publication workflow - Front-end prototype</div>
+            </div>
+                        <div class="footer-links">
+                <a href="Homepage.html">Home</a>
+                <a href="AboutUs.html">About Us</a>
+                <a href="Services.html">Services</a>
+                <a href="DashboardNew.html">Dashboard</a>
+                <a href="ContactUs.html">Contact Us</a>
+            </div>
+            <div class="footer-contact">
+                <div><strong>Contact</strong></div>
+                <div>Phone: 2023202027</div>
+                <div>Email: support@mkprint.com</div>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
+    </footer>
+    <script>
+        (function () {
+            var form = document.getElementById('contactQueryForm');
+            var success = document.getElementById('querySuccess');
+            var docket = document.getElementById('queryDocketNo');
+            if (!form || !success || !docket) return;
+
+            function generateDocket() {
+                var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                var out = '';
+                for (var i = 0; i < 5; i++) {
+                    out += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return out;
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                docket.textContent = generateDocket();
+                form.hidden = true;
+                success.hidden = false;
+            });
+        })();
+    </script>
+</body>
+</html>
+
+
+
