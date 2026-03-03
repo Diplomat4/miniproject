@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,22 +12,116 @@
             border-bottom: 1px solid var(--border);
             padding: 3rem 1rem 2rem;
         }
-        .category-kpis {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
+        .step-shell {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem 1rem;
+            background: linear-gradient(180deg, #111827, #0f172a);
         }
-        .kpi-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+        .step-card {
+            width: min(980px, 100%);
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.26);
+            border-radius: 16px;
+            padding: clamp(1rem, 2.2vw, 1.8rem);
+            text-align: center;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
+            cursor: pointer;
+            transform: translateY(0);
+            opacity: 1;
+            transition: transform 0.35s ease, opacity 0.35s ease, box-shadow 0.25s ease;
+        }
+        .step-card:hover { box-shadow: 0 24px 48px rgba(0, 0, 0, 0.42); }
+        .step-card.is-exit { opacity: 0; transform: translateY(-14px); }
+        .step-card h2 {
+            margin: 0 0 1rem;
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            color: #e2e8f0;
+            display: inline-block;
+            padding: 0.35rem 0.85rem 0.45rem;
             border-radius: 10px;
-            padding: 1rem;
         }
-        .kpi-label { color: var(--text-sub); font-size: 0.85rem; }
-        .kpi-value { color: var(--primary); font-weight: 800; font-size: 1.2rem; margin-top: 0.25rem; }
+        .title-main {
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            background: rgba(37, 99, 235, 0.26);
+            border: 1px solid rgba(147, 197, 253, 0.42);
+            box-shadow: 0 8px 22px rgba(30, 64, 175, 0.3);
+        }
+        .title-sub {
+            font-weight: 700;
+            font-style: italic;
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(148, 163, 184, 0.36);
+        }
+        .step-media {
+            display: grid;
+            gap: 0.85rem;
+            grid-template-columns: 1fr;
+            margin: 0.85rem 0 1.1rem;
+        }
+        .step-media.two {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .step-media.four {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .step-img-wrap {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: zoom-in;
+        }
+        .step-media img {
+            width: 100%;
+            height: clamp(170px, 24vw, 250px);
+            object-fit: cover;
+            display: block;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+        .step-img-wrap::after {
+            content: "Click to Enlarge";
+            position: absolute;
+            inset: auto 0 0 0;
+            padding: 0.55rem;
+            font-size: 0.82rem;
+            letter-spacing: 0.03em;
+            color: #e2e8f0;
+            background: linear-gradient(180deg, rgba(0,0,0,0), rgba(2,6,23,0.88));
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .step-img-wrap:hover::after { opacity: 1; }
+        .step-card p {
+            margin: 0.65rem 0 0;
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: clamp(0.95rem, 1.45vw, 1.02rem);
+            text-align: left;
+        }
+        .img-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.84);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 1000;
+        }
+        .img-modal.show { display: flex; }
+        .img-modal img {
+            max-width: min(1100px, 96vw);
+            max-height: 90vh;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+        }
+        @media (max-width: 780px) {
+            .step-media.two, .step-media.four { grid-template-columns: 1fr; }
+            .step-card p { font-size: 0.93rem; }
+        }
     </style>
 </head>
 <body class="homepage" id="top">
@@ -51,26 +145,17 @@
             <a href="Manuscript.html" style="color: var(--primary); font-weight: 700;">Manuscript</a>
             <a href="Prepress.html">Prepress</a>
             <a href="Printing.html">Printing</a>
-            <a href="Binding.html">Post-press Stage</a>
+            <a href="postpress.html">Post-press Stage</a>
         </div>
     </nav>
     <main>
         <div class="category-header">
             <h1>Manuscript</h1>
-            <p>Intake, editorial validation, and structure locking before layout and production begin.</p>
+            <p>Manuscript process overview.</p>
         </div>
-        <section class="category-kpis">
-            <div class="kpi-card"><div class="kpi-label">Average Intake Window</div><div class="kpi-value">24 Hours</div></div>
-            <div class="kpi-card"><div class="kpi-label">Editorial Checkpoints</div><div class="kpi-value">6 Stages</div></div>
-            <div class="kpi-card"><div class="kpi-label">Versioning Accuracy</div><div class="kpi-value">99.7%</div></div>
-            <div class="kpi-card"><div class="kpi-label">Author Approval Loop</div><div class="kpi-value">2 Rounds</div></div>
+        <section class="step-shell">
+            <article class="step-card" id="stepCard" aria-live="polite"></article>
         </section>
-        <div class="product-grid">
-            <a href="#" class="product-card"><div class="product-img">&#128196;</div><div class="product-info"><h3 class="product-title">Submission Intake</h3><div class="product-price">Collect source files, references, and metadata.</div></div></a>
-            <a href="#" class="product-card"><div class="product-img">&#9989;</div><div class="product-info"><h3 class="product-title">Editorial Screening</h3><div class="product-price">Scope check for completeness, tone, and structure.</div></div></a>
-            <a href="#" class="product-card"><div class="product-img">&#128209;</div><div class="product-info"><h3 class="product-title">Content Standardization</h3><div class="product-price">Unify headings, citation styles, and asset references.</div></div></a>
-            <a href="#" class="product-card"><div class="product-img">&#128273;</div><div class="product-info"><h3 class="product-title">Final Manuscript Lock</h3><div class="product-price">Freeze the approved draft for prepress handoff.</div></div></a>
-        </div>
     </main>
     <footer class="site-footer" id="footerContact">
         <div class="site-footer-inner">
@@ -83,7 +168,7 @@
                 <a href="Manuscript.html">Manuscript</a>
                 <a href="Prepress.html">Prepress</a>
                 <a href="Printing.html">Printing</a>
-                <a href="Binding.html">Post-press Stage</a>
+                <a href="postpress.html">Post-press Stage</a>
             </div>
             <div class="footer-contact">
                 <div><strong>Contact</strong></div>
@@ -91,10 +176,70 @@
                 <div>Email: support@mkprint.com</div>
             </div>
         </div>
-        <div class="footer-bottom">&copy; 2026 MK Print Solutions by Karmakar, Seth, Mandal</div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
+    <div class="img-modal" id="imgModal"><img id="imgModalPhoto" alt="Expanded image"></div>
+    <script>
+        (function () {
+            var steps = [
+                { title: "Manuscript", layout: "one", images: ["images/MANUSCRIPT EDITING.jpg"], paragraphs: ["Manuscript intake, editorial validation, and structural checks are completed here before detailed prepress execution begins.", "This stage ensures content readiness, approval integrity, and clean handoff quality for design, proofing, and plate preparation."] },
+                { title: "Designing & Page Planning", layout: "two", images: ["images/DesigningandPagePlanning1.png", "images/DesigningandPagePlanning2.png"], paragraphs: ["At MK Print Solutions, we offer creative and structured designing and page planning services to bring every book to life with clarity and visual appeal. Our team specializes in cover design, interior layout, typography selection, and formatting that align with the book's theme and target audience. We ensure proper margin setting, alignment, pagination, and chapter structuring for a smooth reading experience.", "We focus on balanced layouts, consistent styling, and effective use of images, tables, and graphics to enhance readability and aesthetics. Our page planning ensures optimal space utilization and print efficiency, reducing errors and production costs. With attention to detail and adherence to publishing standards, we deliver well-organized, professional, and press-ready designs."] },
+                { title: "Proofing", layout: "two", images: ["images/Proofing1.png", "images/Proofing2.png"], paragraphs: ["At MK Print Solutions, we provide accurate and reliable proofing services to ensure every detail is perfected before printing. Our process includes thorough content verification, layout checking, font consistency, color accuracy, and alignment review to eliminate errors at every stage. We offer both digital and hardcopy proofs, allowing clients to review and approve the final output with confidence.", "Using calibrated color management systems, we ensure that the proof closely matches the final printed result. Our team carefully checks for typographical errors, image quality, pagination, and overall design consistency. With a strong focus on precision, quality control, and quick turnaround, we help deliver flawless, press-ready files that meet professional publishing standards."] },
+                { title: "Plate Making", layout: "two", images: ["images/Plate Making1.png", "images/Plate Making2.png"], paragraphs: ["At MK Print Solutions, we provide advanced plate making services to ensure accurate and high-quality print reproduction. Using modern CTP (Computer-to-Plate) technology, we directly transfer digital files onto printing plates with precision, eliminating errors and maintaining sharp image and text clarity. Our process ensures proper imposition, registration, and color separation for consistent results on press.", "We use high-quality plates and maintain strict quality control to ensure durability, accurate ink transfer, and minimal wastage during printing. Our team carefully checks every plate for alignment, dot accuracy, and defects before dispatch. With efficient workflows and fast turnaround, we deliver reliable, press-ready plates that meet professional printing standards."] }
+            ];
+
+            var card = document.getElementById("stepCard");
+            var modal = document.getElementById("imgModal");
+            var modalPhoto = document.getElementById("imgModalPhoto");
+            if (!card || !modal || !modalPhoto) return;
+
+            var index = 0;
+            var locked = false;
+
+            function mediaClass(layout) { return layout === "four" ? "step-media four" : layout === "two" ? "step-media two" : "step-media"; }
+
+            function render(i) {
+                var step = steps[i];
+                var titleClass = i === 0 ? "title-main" : "title-sub";
+                var images = step.images.map(function (src) {
+                    return '<figure class="step-img-wrap"><img src="' + src + '" alt="' + step.title + '" loading="lazy"></figure>';
+                }).join("");
+                var paragraphs = step.paragraphs.map(function (text) {
+                    return "<p>" + text + "</p>";
+                }).join("");
+                card.innerHTML = "<h2 class='" + titleClass + "'>" + step.title + "</h2><div class='" + mediaClass(step.layout) + "'>" + images + "</div>" + paragraphs;
+            }
+
+            function nextStep() {
+                if (locked) return;
+                locked = true;
+                card.classList.add("is-exit");
+                setTimeout(function () {
+                    index = (index + 1) % steps.length;
+                    render(index);
+                    card.classList.remove("is-exit");
+                    locked = false;
+                }, 280);
+            }
+
+            card.addEventListener("click", function () { nextStep(); });
+            card.addEventListener("click", function (e) {
+                var img = e.target.closest(".step-img-wrap img");
+                if (!img) return;
+                e.stopPropagation();
+                modalPhoto.src = img.src;
+                modal.classList.add("show");
+            }, true);
+
+            modal.addEventListener("click", function () { modal.classList.remove("show"); });
+            render(index);
+        })();
+    </script>
 </body>
 </html>
+
+
+
 
 
 

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Printing | MK Print Solutions</title>
+    <title>Post Press | MK Print Solutions</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        :root { --primary: #0891b2; }
+        :root { --primary: #ea580c; }
         .category-header {
-            background: linear-gradient(135deg, #13273a, #0f172a);
+            background: linear-gradient(135deg, #312010, #0f172a);
             border-bottom: 1px solid var(--border);
             padding: 3rem 1rem 2rem;
         }
@@ -46,9 +46,9 @@
         .title-main {
             font-weight: 900;
             letter-spacing: 0.02em;
-            background: rgba(8, 145, 178, 0.28);
-            border: 1px solid rgba(103, 232, 249, 0.4);
-            box-shadow: 0 8px 22px rgba(8, 145, 178, 0.3);
+            background: rgba(234, 88, 12, 0.24);
+            border: 1px solid rgba(251, 146, 60, 0.42);
+            box-shadow: 0 8px 22px rgba(194, 65, 12, 0.28);
         }
         .title-sub {
             font-weight: 700;
@@ -62,11 +62,8 @@
             grid-template-columns: 1fr;
             margin: 0.85rem 0 1.1rem;
         }
-        .step-media.two {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .step-media.four {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        .step-media.three {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
         .step-img-wrap {
             position: relative;
@@ -76,7 +73,7 @@
         }
         .step-media img {
             width: 100%;
-            height: clamp(160px, 22vw, 235px);
+            height: clamp(160px, 21vw, 230px);
             object-fit: cover;
             display: block;
             border: 1px solid rgba(148, 163, 184, 0.3);
@@ -118,8 +115,8 @@
             border-radius: 12px;
             border: 1px solid rgba(148, 163, 184, 0.5);
         }
-        @media (max-width: 780px) {
-            .step-media.two, .step-media.four { grid-template-columns: 1fr; }
+        @media (max-width: 900px) {
+            .step-media.three { grid-template-columns: 1fr; }
             .step-card p { font-size: 0.93rem; }
         }
     </style>
@@ -144,14 +141,14 @@
         <div class="hp-nav-inner">
             <a href="Manuscript.html">Manuscript</a>
             <a href="Prepress.html">Prepress</a>
-            <a href="Printing.html" style="color: var(--primary); font-weight: 700;">Printing</a>
-            <a href="postpress.html">Post-press Stage</a>
+            <a href="Printing.html">Printing</a>
+            <a href="postpress.html" style="color: var(--primary); font-weight: 700;">Post-press Stage</a>
         </div>
     </nav>
     <main>
         <div class="category-header">
-            <h1>Printing</h1>
-            <p>Printing process overview.</p>
+            <h1>Post Press</h1>
+            <p>Post press process overview.</p>
         </div>
         <section class="step-shell">
             <article class="step-card" id="stepCard" aria-live="polite"></article>
@@ -178,13 +175,14 @@
         </div>
         <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
+
     <div class="img-modal" id="imgModal"><img id="imgModalPhoto" alt="Expanded image"></div>
     <script>
         (function () {
             var steps = [
-                { title: "Printing", layout: "one", images: ["images/sheet 2.png"], paragraphs: ["At MK Print Solutions, our printing facility is equipped with a versatile combination of digital, sheetfed offset, and web offset machines, enabling us to handle diverse printing requirements with speed, flexibility, and consistent quality. Our integrated production setup allows seamless movement of jobs across machines, ensuring efficient execution and reduced turnaround time.", "We follow stringent quality control measures at every stage of production, using advanced tools such as spectrophotometers and densitometers to monitor color accuracy and maintain consistency throughout the print run. Our experienced team ensures precise registration, sharp image reproduction, and uniform ink distribution for superior output.", "We are committed to continuous upgradation of our machinery and processes, adopting modern, energy-efficient, and environmentally responsible printing technologies. With a focus on quality, reliability, and timely delivery, MK Print Solutions ensures premium printing solutions that meet the highest industry standards."] },
-                { title: "Web", layout: "two", images: ["images/web 1.png", "images/web 2.png"], paragraphs: ["At MK Print Solutions, our web offset printing facility is designed for high-volume production with exceptional speed and consistent quality. This process is ideal for large print runs such as books, magazines, and newspapers, ensuring cost-effective and efficient execution. Using advanced heat-set and cold-set web offset machines, we deliver sharp images, uniform ink distribution, and excellent print clarity.", "Our automated systems enable continuous printing with precise registration and color consistency throughout the run. With real-time quality monitoring using densitometers and spectrophotometers, we maintain strict control over print standards. The process also supports faster drying and finishing, allowing quick turnaround times for bulk orders.", "With optimized workflows, minimal wastage, and eco-friendly practices, MK Print Solutions ensures reliable, high-speed web offset printing solutions that meet professional publishing requirements."] },
-                { title: "Sheet Fed", layout: "four", images: ["images/sheet 1.png", "images/sheet 2.png", "images/sheet 3.png", "images/sheet 4.png"], paragraphs: ["At MK Print Solutions, our sheetfed offset printing services are designed to deliver superior print quality with precision and consistency. Ideal for medium to high-volume jobs such as books, covers, brochures, and high-end publications, this process ensures sharp text, vibrant colors, and excellent detail reproduction.", "Our advanced sheetfed machines support a wide range of paper types and sizes, offering flexibility for diverse printing requirements. With accurate color management, proper registration, and controlled ink density, we achieve uniform results across the entire print run. We use modern quality control tools to monitor output and maintain industry standards.", "With efficient setup, reduced wastage, and quick turnaround, MK Print Solutions ensures high-quality sheetfed offset printing that meets professional publishing and commercial printing needs."] }
+                { title: "Post Press", layout: "one", images: ["images/BINDING IMAGE 1.png"], paragraphs: ["At MK Print Solutions, our post press operations transform printed sheets into finished, high-quality products ready for end use. We offer a complete range of finishing and binding services to ensure durability, functionality, and visual appeal. Our process includes precision cutting, folding, collating, gathering, and binding methods such as perfect binding, saddle stitching, and section sewing for books and publications.", "We provide a wide variety of finishing options including lamination (gloss, matte, and thermal), UV and spot UV coating, varnishing, hot foil stamping, embossing, debossing, creasing, and die cutting to enhance the overall look and feel of the product. Additional services such as index cutting, edge gilding, tipping, and screen printing are also available to meet specialized requirements.", "With modern equipment, strict quality control, and attention to detail, we ensure consistency and excellence in every job. Our efficient workflow enables quick turnaround times, making MK Print Solutions a reliable partner for complete post press solutions tailored to diverse customer needs."] },
+                { title: "Binding", layout: "three", images: ["images/BINDING IMAGE 1.png", "images/BINDING IMAGE 2.png", "images/BINDING IMAGE 3.png"], paragraphs: ["At MK Print Solutions, we offer a wide range of binding solutions to ensure durability, functionality, and a professional finish for every publication. Our services include perfect binding, saddle stitching, section sewing, case binding (hardcover), and spiral or wiro binding, catering to different book formats and usage requirements.", "We ensure strong adhesion, precise alignment, and clean finishing for long-lasting results. Our binding process is supported by advanced machinery and strict quality checks to maintain consistency in trimming, spine formation, and overall presentation. We also provide options for cover lamination, embossing, foil stamping, and other enhancements to improve the final appearance.", "With attention to detail, efficient workflow, and quick turnaround, MK Print Solutions delivers high-quality binding solutions that meet professional publishing standards and customer expectations."] },
+                { title: "Finishing Operations", layout: "three", images: ["images/FINISHING IMAGE 1.png", "images/FINISHING IMAGE 2.png", "images/FINISHING IMAGE 3.png"], paragraphs: ["At MK Print Solutions, our finishing operations ensure that every printed product is refined to perfection before delivery. We provide a comprehensive range of finishing services including precision trimming, folding, creasing, die cutting, lamination (gloss, matte, and thermal), UV and spot UV coating, embossing, debossing, and foil stamping to enhance durability and visual appeal.", "Our streamlined workflow covers collating, gathering, inserting, and detailed quality checks at every stage to maintain accuracy and consistency. With advanced machinery and skilled handling, we ensure clean finishing, proper alignment, and professional presentation.", "Focused on efficiency and quality, MK Print Solutions delivers reliable finishing operations with quick turnaround, minimal wastage, and results that meet the highest industry standards."] }
             ];
 
             var card = document.getElementById("stepCard");
@@ -195,7 +193,7 @@
             var index = 0;
             var locked = false;
 
-            function mediaClass(layout) { return layout === "four" ? "step-media four" : layout === "two" ? "step-media two" : "step-media"; }
+            function mediaClass(layout) { return layout === "three" ? "step-media three" : "step-media"; }
 
             function render(i) {
                 var step = steps[i];
@@ -236,12 +234,6 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
 
 
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,178 +6,206 @@
     <title>Workflow Overview | MK Print Solutions</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        .workflow-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            overflow: hidden;
+            background: #dbeafe;
+        }
+
+        .workflow-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(1.08) saturate(0.9);
+        }
+
+        .workflow-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(239, 246, 255, 0.5);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hp-header,
+        .hp-nav,
+        .workflow-page-main,
+        .site-footer {
+            position: relative;
+            z-index: 1;
+        }
+
         .workflow-page-main {
             max-width: 1400px;
             margin: 0 auto;
             padding: 3rem 1.5rem 4rem;
+            text-align: center;
         }
 
         .workflow-page-head {
             text-align: center;
-            margin-bottom: 1.25rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+            max-width: 100%;
+            padding: 0.95rem 2rem 1.05rem;
+            border-radius: 999px;
+            background: rgba(8, 47, 73, 0.82);
+            border: 1px solid rgba(125, 211, 252, 0.38);
+            box-shadow: 0 14px 28px rgba(7, 89, 133, 0.3);
         }
 
         .workflow-page-head h1 {
             font-size: 2.15rem;
-            color: var(--text-main);
-            margin-bottom: 0.45rem;
+            color: #e0f2fe;
+            margin-bottom: 0.25rem;
         }
 
         .workflow-page-head p {
-            color: var(--text-sub);
+            color: #bae6fd;
             font-size: 1rem;
+            margin: 0;
         }
 
-        .wf-stage-rail {
-            display: flex;
-            justify-content: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
+        .wf-carousel {
+            position: relative;
+            overflow: hidden;
+            min-height: 320px;
+            width: 100%;
+            margin: 0 auto;
         }
 
-        .wf-stage-chip {
-            padding: 0.4rem 0.8rem;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: #bfdbfe;
-            background: #13203a;
-        }
-
-        .wf-carousel-wrap {
-            display: grid;
-            grid-template-columns: 56px minmax(0, 1fr) 56px;
-            align-items: center;
-            gap: 0.8rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 1.1rem;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
-        }
-
-        .wf-control {
-            width: 46px;
-            height: 46px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            background: #16233a;
-            color: #dbeafe;
-            font-size: 1.45rem;
-            font-weight: 700;
-            line-height: 1;
-            cursor: pointer;
-            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-        }
-
-        .wf-control:hover {
-            transform: scale(1.06);
-            background: #1f2f4d;
-            border-color: #60a5fa;
-        }
-
-        .wf-control:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .wf-viewport {
+        .wf-track {
             position: relative;
             width: 100%;
-            min-height: 360px;
-            overflow: hidden;
-            border-radius: 14px;
-            background: linear-gradient(180deg, #0f172a, #0b1220);
+            min-height: 320px;
         }
 
-        .wf-slide {
+        .wf-card {
+            position: relative;
+            min-height: 240px;
+            width: clamp(220px, 32vw, 360px);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: #0f172a center/cover no-repeat;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+            transition: transform 0.42s ease, opacity 0.42s ease, filter 0.42s ease, box-shadow 0.42s ease;
+            isolation: isolate;
             position: absolute;
             left: 50%;
             top: 50%;
-            width: clamp(230px, 36vw, 340px);
-            min-height: 210px;
-            padding: 1rem 1rem 1.15rem;
-            border-radius: 14px;
-            border: 1px solid #334a72;
-            background: linear-gradient(180deg, #162746, #12203b);
-            color: var(--text-main);
-            box-shadow: 0 14px 24px rgba(0, 0, 0, 0.28);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.45s ease, opacity 0.35s ease, filter 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
             transform: translate(-50%, -50%);
-            cursor: pointer;
+            opacity: 0;
+            filter: blur(2px);
+            pointer-events: none;
         }
 
-        .wf-slide.is-active {
-            border-color: #60a5fa;
-            box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.45), 0 18px 34px rgba(30, 64, 175, 0.35);
+        .wf-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 15, 28, 0.45) 8%, rgba(10, 15, 28, 0.55) 45%, rgba(10, 15, 28, 0.78) 100%);
+            z-index: -1;
         }
 
-        .wf-slide.is-active:hover {
+        .wf-card.is-active {
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.38);
+            pointer-events: auto;
+            z-index: 3;
+        }
+
+        .wf-card.is-active:hover {
             transform: translate(-50%, -50%) scale(1.03) !important;
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.34);
         }
 
-        .wf-slide-stage {
-            display: inline-flex;
-            align-self: flex-start;
-            padding: 0.25rem 0.55rem;
-            border-radius: 999px;
-            border: 1px solid rgba(191, 219, 254, 0.35);
-            color: #bfdbfe;
-            font-size: 0.73rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-        }
-
-        .wf-slide-step {
-            margin-top: 0.9rem;
-            margin-bottom: auto;
-            font-size: 1.36rem;
-            font-weight: 800;
-            line-height: 1.2;
+        .wf-step {
+            margin: 0;
+            padding: 0.55rem 0.9rem 0.6rem;
+            font-size: clamp(1.5rem, 2.8vw, 2rem);
+            line-height: 1.1;
+            font-weight: 900;
+            letter-spacing: 0.02em;
             text-transform: capitalize;
+            color: #f8fafc;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.45);
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
         }
 
-        .wf-slide-meta {
-            margin-top: 1.2rem;
-            color: #9fb0c8;
-            font-size: 0.82rem;
-            letter-spacing: 0.04em;
+        .wf-category {
+            position: absolute;
+            left: 50%;
+            bottom: 0.75rem;
+            transform: translateX(-50%);
+            margin: 0;
+            font-size: 0.72rem;
+            letter-spacing: 0.09em;
             text-transform: uppercase;
+            color: rgba(226, 232, 240, 0.82);
             font-weight: 600;
         }
 
-        .wf-index {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--text-sub);
-            font-size: 0.9rem;
-            letter-spacing: 0.03em;
+        .wf-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 58px;
+            height: 58px;
+            border: 0;
+            border-radius: 999px;
+            background: linear-gradient(145deg, rgba(12, 74, 110, 0.94), rgba(8, 47, 73, 0.94));
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32), inset 0 0 0 1px rgba(226, 232, 240, 0.16);
+            color: #e0f2fe;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 2;
+            backdrop-filter: blur(2px);
+            transition: background 0.2s ease, transform 0.2s ease;
         }
 
-        @media (max-width: 860px) {
-            .wf-carousel-wrap {
-                grid-template-columns: 48px minmax(0, 1fr) 48px;
-                padding: 0.85rem;
-            }
+        .wf-nav:hover {
+            background: rgba(8, 47, 73, 0.96);
+            transform: translateY(-50%) scale(1.04);
+        }
 
-            .wf-viewport {
-                min-height: 330px;
-            }
+        .wf-prev { left: 0.6rem; }
+        .wf-next { right: 0.6rem; }
 
-            .wf-slide {
-                width: clamp(210px, 72vw, 300px);
-                min-height: 200px;
-            }
+        @media (max-width: 980px) {
+            .wf-carousel, .wf-track { min-height: 290px; }
+            .wf-card { width: clamp(200px, 44vw, 300px); min-height: 220px; }
+        }
+
+        @media (max-width: 640px) {
+            .wf-carousel, .wf-track { min-height: 270px; }
+            .wf-card { width: min(86vw, 320px); min-height: 210px; }
+            .wf-nav { width: 46px; height: 46px; font-size: 1.6rem; }
         }
     </style>
 </head>
 <body class="homepage" id="top">
+    <div class="workflow-bg" aria-hidden="true">
+        <video autoplay muted loop playsinline>
+            <source src="images/video letterpress.mp4" type="video/mp4">
+        </video>
+    </div>
     <header class="hp-header">
         <div class="hp-header-inner">
             <a href="index.html" class="hp-logo">MK Print Solutions</a>
@@ -206,24 +234,67 @@
     <main class="workflow-page-main">
         <section class="workflow-page-head">
             <h1>Workflow Overview</h1>
-            <p>Use the arrows to move cards. The active card stays centered and larger.</p>
+            <p>Step cards across pre-press, press, and post-press.</p>
         </section>
 
-        <div class="wf-stage-rail" aria-hidden="true">
-            <span class="wf-stage-chip">MANUSCRIPT</span>
-            <span class="wf-stage-chip">PREPRESS</span>
-            <span class="wf-stage-chip">PRINTING</span>
-            <span class="wf-stage-chip">POST PRESS</span>
-        </div>
-
-        <section class="wf-carousel-wrap" aria-label="Workflow stage and sub-step carousel">
-            <button type="button" class="wf-control" id="wfPrevBtn" aria-label="Previous card">&#8249;</button>
-            <div class="wf-viewport" id="wfViewport">
-                <div id="wfTrack"></div>
+        <section class="wf-carousel" aria-label="Workflow cards carousel">
+            <button class="wf-nav wf-prev" id="wfPrev" aria-label="Previous slide">&#8249;</button>
+            <div class="wf-track" id="wfTrack">
+                <article class="wf-card" style="background-image:url('images/editing.jpg')">
+                    <h2 class="wf-step">Editing</h2>
+                    <p class="wf-category">Manuscript</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/proofreading.jpg')">
+                    <h2 class="wf-step">Proofreading</h2>
+                    <p class="wf-category">Manuscript</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/approval.jpg')">
+                    <h2 class="wf-step">Approval</h2>
+                    <p class="wf-category">Manuscript</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/layout.jpg')">
+                    <h2 class="wf-step">Layout</h2>
+                    <p class="wf-category">Pre Press</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/preflighting.jpg')">
+                    <h2 class="wf-step">Preflighting</h2>
+                    <p class="wf-category">Pre Press</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/imposition.jpg')">
+                    <h2 class="wf-step">Imposition</h2>
+                    <p class="wf-category">Pre Press</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/platemaking.jpg')">
+                    <h2 class="wf-step">Platemaking</h2>
+                    <p class="wf-category">Pre Press</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/makeready.jpg')">
+                    <h2 class="wf-step">Make Ready</h2>
+                    <p class="wf-category">Printing</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/trialprintrun.jpg')">
+                    <h2 class="wf-step">Trial Print Run</h2>
+                    <p class="wf-category">Printing</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/qc.jpg')">
+                    <h2 class="wf-step">QC</h2>
+                    <p class="wf-category">Printing</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/cutting.jpg')">
+                    <h2 class="wf-step">Cutting</h2>
+                    <p class="wf-category">Postpress</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/folding.jpg')">
+                    <h2 class="wf-step">Folding</h2>
+                    <p class="wf-category">Postpress</p>
+                </article>
+                <article class="wf-card" style="background-image:url('images/binding.jpg')">
+                    <h2 class="wf-step">Binding</h2>
+                    <p class="wf-category">Postpress</p>
+                </article>
             </div>
-            <button type="button" class="wf-control" id="wfNextBtn" aria-label="Next card">&#8250;</button>
+            <button class="wf-nav wf-next" id="wfNext" aria-label="Next slide">&#8250;</button>
         </section>
-        <p class="wf-index" id="wfIndexLabel" aria-live="polite"></p>
     </main>
 
     <footer class="site-footer" id="footerContact">
@@ -245,126 +316,70 @@
                 <div>Email: support@mkprint.com</div>
             </div>
         </div>
-        <div class="footer-bottom">&copy; 2026 MK Print Solutions by Karmakar, Seth, Mandal</div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
-
     <script>
-        (function() {
-            var cards = [
-                { stage: 'MANUSCRIPT', step: 'editing' },
-                { stage: 'MANUSCRIPT', step: 'proofreading' },
-                { stage: 'MANUSCRIPT', step: 'Approval' },
-                { stage: 'PREPRESS', step: 'layout' },
-                { stage: 'PREPRESS', step: 'preflighting' },
-                { stage: 'PREPRESS', step: 'imposition' },
-                { stage: 'PREPRESS', step: 'platemaking' },
-                { stage: 'PRINTING', step: 'make ready' },
-                { stage: 'PRINTING', step: 'Trial Print run' },
-                { stage: 'PRINTING', step: 'QC' },
-                { stage: 'POST PRESS', step: 'cutting/trimming' },
-                { stage: 'POST PRESS', step: 'folding' },
-                { stage: 'POST PRESS', step: 'binding' }
-            ];
+        (function () {
+            var track = document.getElementById("wfTrack");
+            var prev = document.getElementById("wfPrev");
+            var next = document.getElementById("wfNext");
+            if (!track || !prev || !next) return;
 
-            var track = document.getElementById('wfTrack');
-            var prevBtn = document.getElementById('wfPrevBtn');
-            var nextBtn = document.getElementById('wfNextBtn');
-            var indexLabel = document.getElementById('wfIndexLabel');
-            if (!track || !prevBtn || !nextBtn || !indexLabel || !cards.length) return;
+            var cards = Array.from(track.children);
+            var total = cards.length;
+            var active = 0;
+            var busy = false;
 
-            var activeIndex = 0;
-            var slides = [];
-
-            cards.forEach(function(card, i) {
-                var slide = document.createElement('article');
-                slide.className = 'wf-slide';
-                slide.setAttribute('role', 'group');
-                slide.setAttribute('aria-label', card.stage + ' - ' + card.step);
-                slide.innerHTML =
-                    '<span class="wf-slide-stage">' + card.stage + '</span>' +
-                    '<div class="wf-slide-step">' + card.step + '</div>' +
-                    '<div class="wf-slide-meta">Step ' + (i + 1) + ' of ' + cards.length + '</div>';
-
-                slide.addEventListener('click', function() {
-                    activeIndex = i;
-                    render();
-                });
-
-                track.appendChild(slide);
-                slides.push(slide);
-            });
-
-            function circularDelta(i, current, total) {
-                var delta = i - current;
-                if (delta > total / 2) delta -= total;
-                if (delta < -total / 2) delta += total;
-                return delta;
+            function loopDelta(i, current, len) {
+                var d = i - current;
+                if (d > len / 2) d -= len;
+                if (d < -len / 2) d += len;
+                return d;
             }
 
             function render() {
-                slides.forEach(function(slide, i) {
-                    var delta = circularDelta(i, activeIndex, slides.length);
-                    var abs = Math.abs(delta);
-                    var x;
-                    var scale;
-                    var opacity;
-                    var blur;
-
-                    if (abs === 0) {
-                        x = 0;
-                        scale = 1;
-                        opacity = 1;
-                        blur = 0;
-                    } else if (abs === 1) {
-                        x = delta * 260;
-                        scale = 0.82;
-                        opacity = 0.6;
-                        blur = 0;
-                    } else if (abs === 2) {
-                        x = delta * 405;
-                        scale = 0.66;
-                        opacity = 0.25;
-                        blur = 0.5;
-                    } else {
-                        x = delta * 520;
-                        scale = 0.52;
-                        opacity = 0;
-                        blur = 1.5;
-                    }
-
-                    slide.style.transform = 'translate(-50%, -50%) translateX(' + x + 'px) scale(' + scale + ')';
-                    slide.style.opacity = String(opacity);
-                    slide.style.filter = 'blur(' + blur + 'px)';
-                    slide.style.zIndex = String(100 - abs);
-                    slide.classList.toggle('is-active', abs === 0);
-                    slide.setAttribute('aria-hidden', abs > 2 ? 'true' : 'false');
+                var offset = window.innerWidth < 640 ? 0 : window.innerWidth < 980 ? 190 : 280;
+                cards.forEach(function (card, i) {
+                    var d = loopDelta(i, active, total);
+                    var a = Math.abs(d);
+                    var x = d * offset;
+                    var scale = a === 0 ? 1 : a === 1 ? 0.78 : 0.62;
+                    var opacity = a === 0 ? 1 : a === 1 ? 0.55 : 0;
+                    var blur = a === 0 ? 0 : a === 1 ? 1.4 : 3;
+                    card.style.transform = "translate(-50%, -50%) translateX(" + x + "px) scale(" + scale + ")";
+                    card.style.opacity = String(opacity);
+                    card.style.filter = "blur(" + blur + "px)";
+                    card.style.zIndex = String(20 - a);
+                    card.classList.toggle("is-active", a === 0);
+                    card.setAttribute("aria-hidden", a > 1 ? "true" : "false");
                 });
-
-                var current = cards[activeIndex];
-                indexLabel.textContent = current.stage + ' - ' + current.step + ' (' + (activeIndex + 1) + '/' + cards.length + ')';
             }
 
-            function goNext() {
-                activeIndex = (activeIndex + 1) % cards.length;
+            function shift(step) {
+                if (busy) return;
+                busy = true;
+                active = (active + step + total) % total;
                 render();
+                window.setTimeout(function () { busy = false; }, 430);
             }
 
-            function goPrev() {
-                activeIndex = (activeIndex - 1 + cards.length) % cards.length;
-                render();
-            }
-
-            nextBtn.addEventListener('click', goNext);
-            prevBtn.addEventListener('click', goPrev);
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowRight') goNext();
-                if (e.key === 'ArrowLeft') goPrev();
+            prev.addEventListener("click", function () { shift(-1); });
+            next.addEventListener("click", function () { shift(1); });
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "ArrowLeft") shift(-1);
+                if (e.key === "ArrowRight") shift(1);
             });
+            window.addEventListener("resize", render);
 
             render();
         })();
     </script>
 </body>
 </html>
+
+
+
+
+
+
 

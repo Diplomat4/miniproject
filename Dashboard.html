@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,12 +22,12 @@
         <div class="nav-links" aria-label="Primary navigation">
             <a href="index.html">Home</a>
             <a href="Dashboard.html" aria-current="page">Dashboard</a>
-            <a href="#manuscriptWorkspace">Manuscripts</a>
+            <a href="#" id="nocOpenWindowLink">New Order Creation</a>
             <a href="#footerContact">Contact</a>
         </div>
 
         <div class="nav-right">
-            <span class="nav-meta">Mini Project by Mandal, Karmakar, Seth</span>
+            <span class="nav-meta">Created by: Mandal & Karmakar</span>
             <a class="btn btn-secondary btn-sm" href="LOGIN/Login.html">Sign in</a>
         </div>
     </nav>
@@ -35,65 +35,6 @@
     <div class="container">
         
         <aside>
-            <div class="card" id="manuscriptWorkspace">
-                <h2>Manuscript Workspace</h2>
-
-                <p class="helper-text" style="margin-bottom: 1rem;">
-                    Upload a manuscript/proof as a new version and configure print options from the PDF overlay.
-                </p>
-                <p class="helper-text" id="msStatus" style="margin-bottom: 1rem;">
-                    Status: initializing...
-                </p>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="msRole">Uploading as</label>
-                        <select id="msRole">
-                            <option value="Author">Author</option>
-                            <option value="Printer">Printer / Production</option>
-                            <option value="Editor">Editor</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="msStage">Status</label>
-                        <select id="msStage">
-                            <option value="Draft">Draft</option>
-                            <option value="Proof Sent">Proof Sent</option>
-                            <option value="Approved">Approved</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="msFile">Manuscript / Proof File</label>
-                    <div class="dropzone" id="msDropzone" role="button" tabindex="0" aria-label="Upload manuscript file (drag and drop or click)">
-                        <div class="dropzone-title">Drag & drop your file here</div>
-                        <div class="dropzone-sub">or click to browse - PDF, DOCX, TXT, MD, RTF</div>
-                        <div class="dropzone-file" id="msSelectedFile">No file selected</div>
-                        <input type="file" id="msFile" accept=".pdf,.doc,.docx,.txt,.md,.rtf">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Uploaded File Preview</label>
-                    <div id="preview-container" style="display:flex; gap:12px; flex-wrap:wrap;"></div>
-                </div>
-                <div class="form-group">
-                    <label>Print Options Summary</label>
-                    <div id="printOptionsSummary" class="helper-text">No print options selected yet.</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="msNote">Notes / requested changes (optional)</label>
-                    <input type="text" id="msNote" placeholder="e.g. Fix margins in Chapter 3 and replace Figure 2.1">
-                </div>
-
-                <div class="btn-row">
-                    <button type="button" class="btn" id="msSaveBtn">Upload Manuscript</button>
-                    <button type="button" class="btn btn-secondary" id="msClearBtn">Clear Uploads</button>
-                </div>
-            </div>
-
             <div class="card">
                 <h2>Workflow Logic</h2>
                 <div class="helper-text">
@@ -187,6 +128,229 @@
                     </table>
                 </div>
             </div>
+
+            <section class="card noc-root" id="newOrderCreationTab" aria-label="New order creation workflow">
+                <div class="noc-title-row">
+                    <div class="noc-title-box">
+                        <h2>New Order Creation</h2>
+                    </div>
+                    <button type="button" class="icon-btn noc-window-close" id="nocWindowCloseBtn" aria-label="Close new order creation window">&times;</button>
+                </div>
+                <p class="noc-subtitle-box">Premium frontend workflow for manuscript preparation, cost estimation, and payment simulation.</p>
+
+                <div class="noc-step is-active" id="nocStepWorkspace">
+                    <div class="noc-grid">
+                        <article class="noc-card">
+                            <h3>Manuscript Workspace</h3>
+                            <p class="helper-text">Upload manuscript files for this new order.</p>
+                            <div class="form-group">
+                                <label for="nocUploadFile">Manuscript / Proof File</label>
+                                <div class="dropzone" id="nocUploadDropzone" role="button" tabindex="0" aria-label="Upload order manuscript file">
+                                    <div class="dropzone-title">Drag &amp; drop your file here</div>
+                                    <div class="dropzone-sub">or click to browse - PDF only</div>
+                                    <div class="dropzone-file" id="nocSelectedFile">No file selected</div>
+                                    <input type="file" id="nocUploadFile" accept=".pdf,application/pdf">
+                                </div>
+                                <p class="noc-upload-required" id="nocUploadRequiredMsg" hidden>Upload required</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Uploaded File Preview</label>
+                                <div id="nocPreviewContainer" class="noc-preview-grid"></div>
+                            </div>
+                        </article>
+
+                        <article class="noc-card">
+                            <h3>Print Preparation Workspace</h3>
+                            <p class="helper-text">Review references before estimating production cost.</p>
+                            <div class="noc-image-grid">
+                                <figure class="noc-image-wrap">
+                                    <img src="images/layout.jpg" alt="Layout planning reference">
+                                </figure>
+                                <figure class="noc-image-wrap">
+                                    <img src="images/proofreading.jpg" alt="Proofing reference">
+                                </figure>
+                            </div>
+                            <div class="noc-note">
+                                Finalize page flow, margins, image quality, and print-readiness checks.
+                            </div>
+                            <button type="button" class="btn noc-cta" id="nocProceedToCalcBtn">Proceed to Cost Calculation</button>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="noc-step" id="nocStepCalc">
+                    <div class="noc-grid">
+                        <article class="noc-card">
+                            <h3>Cost Calculation</h3>
+                            <div class="noc-calc-grid">
+                                <div class="form-group">
+                                    <label for="nocProductType">Product Type</label>
+                                    <select id="nocProductType">
+                                        <option value="Trade">Trade</option>
+                                        <option value="Photo Book">Photo Book</option>
+                                        <option value="Magazine">Magazine</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocSizeOrientation">Size &amp; Orientation</label>
+                                    <select id="nocSizeOrientation">
+                                        <option value="6x9 Portrait">6x9 Portrait</option>
+                                        <option value="8x10 Portrait">8x10 Portrait</option>
+                                        <option value="10x8 Landscape">10x8 Landscape</option>
+                                        <option value="12x12 Square">12x12 Square</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocPaperType">Paper Type + GSM</label>
+                                    <select id="nocPaperType">
+                                        <option value="Uncoated 70">Uncoated 70 GSM</option>
+                                        <option value="Uncoated 90">Uncoated 90 GSM</option>
+                                        <option value="Matte 120">Matte 120 GSM</option>
+                                        <option value="Gloss 150">Gloss 150 GSM</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocCoverType">Cover Type</label>
+                                    <select id="nocCoverType">
+                                        <option value="Softcover">Softcover</option>
+                                        <option value="Hardcover">Hardcover</option>
+                                        <option value="Imagewrap">Imagewrap</option>
+                                        <option value="Dust Jacket">Dust Jacket</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocCoverFinish">Cover Finish</label>
+                                    <select id="nocCoverFinish">
+                                        <option value="Matte">Matte</option>
+                                        <option value="Gloss">Gloss</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocPrintingType">Printing Type</label>
+                                    <select id="nocPrintingType">
+                                        <option value="Digital">Digital</option>
+                                        <option value="Offset">Offset</option>
+                                        <option value="Web">Web</option>
+                                        <option value="Sheetfed">Sheetfed</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocColorMode">Color Mode</label>
+                                    <select id="nocColorMode">
+                                        <option value="B&W">B&amp;W</option>
+                                        <option value="Color">Color</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocBindingType">Binding Type</label>
+                                    <select id="nocBindingType">
+                                        <option value="Perfect Bound">Perfect Bound</option>
+                                        <option value="Saddle Stitch">Saddle Stitch</option>
+                                        <option value="Case Bound">Case Bound</option>
+                                        <option value="Spiral">Spiral</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocPageCount">Page Count</label>
+                                    <input type="number" id="nocPageCount" min="20" value="120">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocQuantity">Quantity</label>
+                                    <input type="number" id="nocQuantity" min="1" value="300">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="noc-card">
+                            <h3>Estimation</h3>
+                            <div class="noc-price-metric">
+                                <span>Final Job Cost</span>
+                                <strong id="nocTotalCost">INR 0.00</strong>
+                            </div>
+                            <div class="noc-price-row">
+                                <span>Cost Per Copy</span>
+                                <strong id="nocCostPerCopy">INR 0.00</strong>
+                            </div>
+                            <div class="noc-breakdown" id="nocBreakdown"></div>
+                            <button type="button" class="btn noc-cta" id="nocProceedToPayBtn">Proceed to Payment</button>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="noc-step" id="nocStepPayment">
+                    <article class="noc-card">
+                        <h3>Payment</h3>
+                        <div class="noc-price-metric noc-price-metric-pay">
+                            <span>Payable Total</span>
+                            <strong id="nocPayableCost">INR 0.00</strong>
+                        </div>
+                        <div class="noc-payment-grid">
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="cod" checked>
+                                Cash on Delivery
+                            </label>
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="upi">
+                                UPI
+                            </label>
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="card">
+                                Card
+                            </label>
+                            <label class="noc-payment-option">
+                                <input type="radio" name="nocPaymentMethod" value="netbanking">
+                                Net Banking
+                            </label>
+                        </div>
+
+                        <div class="noc-payment-pane" id="nocPayPaneCod">
+                            COD selected. Amount will be collected on delivery.
+                        </div>
+                        <div class="noc-payment-pane" id="nocPayPaneUpi" hidden>
+                            <p>Scan QR to pay:</p>
+                            <img id="nocUpiQr" class="noc-upi-qr" alt="UPI QR code">
+                            <p>UPI ID: <strong id="nocUpiId">mkprint@upi</strong></p>
+                        </div>
+                        <div class="noc-payment-pane" id="nocPayPaneCard" hidden>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="nocCardName">Cardholder Name</label>
+                                    <input type="text" id="nocCardName" placeholder="Name on card">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nocCardNumber">Card Number</label>
+                                    <input type="text" id="nocCardNumber" placeholder="XXXX XXXX XXXX XXXX">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="noc-payment-pane" id="nocPayPaneNet" hidden>
+                            <div class="form-group" style="max-width:320px;">
+                                <label for="nocBankName">Select Bank</label>
+                                <select id="nocBankName">
+                                    <option value="SBI">State Bank of India</option>
+                                    <option value="HDFC">HDFC Bank</option>
+                                    <option value="ICICI">ICICI Bank</option>
+                                    <option value="AXIS">Axis Bank</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn noc-cta" id="nocCompletePaymentBtn">Complete Payment</button>
+                    </article>
+                </div>
+
+                <div class="noc-step" id="nocStepSuccess">
+                    <article class="noc-card noc-success">
+                        <h3>Payment Successful</h3>
+                        <p>Your new order has been created and queued for production.</p>
+                        <div class="noc-price-metric noc-price-metric-pay">
+                            <span>Confirmed Total</span>
+                            <strong id="nocConfirmedCost">INR 0.00</strong>
+                        </div>
+                        <div class="noc-details" id="nocSuccessDetails"></div>
+                        <button type="button" class="btn noc-cta" id="nocBackHomeBtn">Return to Home Screen</button>
+                    </article>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -200,7 +364,7 @@
                 <a href="index.html">Home</a>
                 <a href="Dashboard.html">Dashboard</a>
                 <a href="LOGIN/Login.html">Sign in</a>
-                <a href="#manuscriptWorkspace">Manuscripts</a>
+                <a href="#newOrderCreationTab">New Order Creation</a>
             </div>
             <div class="footer-contact">
                 <div><strong>Contact</strong></div>
@@ -208,7 +372,7 @@
                 <div>Email: support@mkprint.com</div>
             </div>
         </div>
-        <div class="footer-bottom">&copy; 2026 MK Print Solutions by Karmakar, Seth, Mandal</div>
+        <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
 
     <div class="toast-container" id="toastContainer" aria-live="polite" aria-relevant="additions"></div>
@@ -310,7 +474,4 @@
 <div class="cursor-follower"></div>
 
 </html>
-
-
-
 
