@@ -1,97 +1,52 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MK Print Solutions | Secure Access</title>
+    <title>MK Print Solutions | Sign In</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="Login.css">
     <script src="Login.js" defer></script>
 </head>
 <body>
-
     <nav class="navbar">
-        <a class="brand" href="../index.html" aria-label="Go to Homepage">MK Print Solutions</a>
-
-        <div class="nav-links" aria-label="Primary navigation">
-            <a href="../index.html">Home</a>
-            <a href="../Dashboard.html">Dashboard</a>
-            <a href="#footerContact">Contact</a>
-        </div>
-
-        <div class="nav-right">
-            <span class="nav-meta">Secure MIS Access</span>
+        <a class="brand" href="Homepage.html">MK Print Solutions</a>
+        <div class="nav-links">
+            <a href="Homepage.html">Home</a>
+            <a href="DashboardNew.html">Dashboard</a>
         </div>
     </nav>
-
     <div class="auth-container">
-
         <div class="auth-card">
-
             <div class="auth-header">
-                <h2 id="formTitle">Login</h2>
-                <p>Authorized personnel only</p>
+                <h2>Login</h2>
+                <p>Enter ID/Registration No, password, then generate OTP. All fields are mandatory.</p>
             </div>
-
-            <form id="authForm">
-
-                <div class="form-group" id="nameGroup" style="display:none;">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" placeholder="e.g. Rahul Mandal">
-                </div>
-
+            <form id="loginForm">
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="e.g. operator@mkprint.com" required>
+                    <label for="loginId">Employee/Customer ID or Registration No</label>
+                    <input type="text" id="loginId" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter secure password" required>
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
                 </div>
-
-                <button type="submit" class="btn" id="submitBtn">
-                    Login to Dashboard
-                </button>
-
+                <div class="otp-row">
+                    <div class="form-group">
+                        <label for="loginOtp">OTP</label>
+                        <input type="text" id="loginOtp" maxlength="4" required>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="generateOtpBtn">Generate OTP</button>
+                </div>
+                <div class="hint-box">Sample users:<br>Employee: empA / ABCD / 2345<br>Customer: custA / PQRS / 6789</div>
+                <button type="submit" class="btn">Sign In</button>
             </form>
-
             <div class="toggle-section">
-                <span id="toggleText">New user?</span>
-                <button id="toggleBtn" class="link-btn">Register Here</button>
+                <span>Not registered yet?</span>
+                <a class="link-btn" href="Register.html">Register here</a>
             </div>
-
-            <div class="auth-message" id="authMessage"></div>
-
+            <div class="auth-message" id="loginMessage"></div>
         </div>
-
     </div>
-
-    <footer class="site-footer" id="footerContact">
-        <div class="site-footer-inner">
-            <div>
-                <div class="footer-brand">MK Print Solutions</div>
-                <div class="footer-sub">Secure access • Front-end prototype</div>
-            </div>
-            <div class="footer-links">
-                <a href="../index.html">Home</a>
-                <a href="../Dashboard.html">Dashboard</a>
-                <a href="Login.html">Sign in</a>
-            </div>
-            <div class="footer-contact">
-                <div><strong>Contact</strong></div>
-                <div>Phone: 2023202027</div>
-                <div>Email: support@mkprint.com</div>
-            </div>
-        </div>
-        <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
-    </footer>
-
 </body>
 </html>
-
-
-
-
-
-

@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Login.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card success-card">
+            <div class="tick-wrap"><span class="tick-mark">&#10003;</span></div>
+            <h2>Thank you for registering</h2>
+            <p id="regCodeText">Your registration number is: --------</p>
+            <a class="btn" href="Login.html" style="display:inline-block;margin-top:1rem;text-decoration:none;">Sign In</a>
+        </div>
+    </div>
+    <script>
+      const p = new URLSearchParams(window.location.search);
+      const regNo = p.get('regNo') || '--------';
+      document.getElementById('regCodeText').textContent = 'Your registration number is: ' + regNo;
+    </script>
+</body>
+</html>

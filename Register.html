@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK Print Solutions | Register</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Login.css">
+    <script src="Register.js" defer></script>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="brand" href="Homepage.html">MK Print Solutions</a>
+        <div class="nav-links"><a href="Homepage.html">Home</a><a href="DashboardNew.html">Dashboard</a><a href="Login.html">Sign in</a></div>
+    </nav>
+    <div class="auth-container">
+        <div class="auth-card register-card">
+            <div class="auth-header"><h2>Register New User</h2><p>All fields are mandatory</p></div>
+            <form id="registerForm">
+                <div class="form-group"><label for="regType">Profile Type</label><select id="regType" required><option value="">Select</option><option value="employee">Employee</option><option value="customer">Customer</option></select></div>
+                <div class="form-group"><label for="regUserId">Employee ID / Customer ID</label><input type="text" id="regUserId" required></div>
+                <div class="form-group"><label for="regName">Name</label><input type="text" id="regName" required></div>
+                <div class="form-group"><label for="regMobile">Mobile</label><input type="tel" id="regMobile" required></div>
+                <div class="form-group"><label for="regEmail">Email</label><input type="email" id="regEmail" required></div>
+                <div class="form-group"><label for="regPassword">Password</label><input type="password" id="regPassword" required></div>
+                <div class="otp-row"><div class="form-group"><label for="regMobileOtp">Mobile OTP</label><input type="text" id="regMobileOtp" maxlength="4" required></div><button type="button" class="btn btn-secondary" id="sendMobileOtpBtn">Send Mobile OTP</button></div>
+                <div class="otp-row"><div class="form-group"><label for="regEmailOtp">Email OTP</label><input type="text" id="regEmailOtp" maxlength="4" required></div><button type="button" class="btn btn-secondary" id="sendEmailOtpBtn">Send Email OTP</button></div>
+                <div class="auth-message" id="registerMessage"></div>
+                <button type="submit" class="btn" id="registerBtn" disabled>Register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

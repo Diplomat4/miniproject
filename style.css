@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --primary: #2563eb;
     --secondary: #475569;
     --success: #16a34a;
@@ -1485,10 +1485,10 @@ body.homepage {
 .query-success-circle {
     fill: none;
     stroke: #22c55e;
-    stroke-width: 9;
+    stroke-width: 12;
     stroke-dasharray: 300;
     stroke-dashoffset: 300;
-    animation: queryCircleDraw 0.75s ease forwards;
+    animation: queryCircleDraw 0.75s ease forwards, queryCircleOrbit 1.8s linear 0.75s infinite;
 }
 
 .query-success-tick {
@@ -1510,8 +1510,23 @@ body.homepage {
     to { stroke-dashoffset: 0; }
 }
 
+@keyframes queryCircleOrbit {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -300; }
+}
+
+.query-form-message {
+    margin-top: 0.55rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.query-form-message.error {
+    color: #b91c1c;
+}
+
 /* =========================================
-   ✨ NEW ANIMATIONS & LIVELY EFFECTS ✨
+   âœ¨ NEW ANIMATIONS & LIVELY EFFECTS âœ¨
    ========================================= */
 
 /* 1. Bouncy Modals */
@@ -2363,4 +2378,219 @@ td {
         right: 1.5rem;
         min-width: auto;
     }
+}
+
+.live-status-guest {
+  border: 1px dashed #cbd5e1;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  color: #0f172a;
+  border-radius: 14px;
+  padding: 1rem;
+  margin: 0.8rem 0 1rem;
+}
+.live-status-guest p { margin: 0 0 0.7rem; font-weight: 600; }
+.live-signin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #10b981, #0ea5e9);
+  border: none;
+  border-radius: 10px;
+  padding: 0.55rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 18px rgba(14, 165, 233, 0.28);
+  margin-top: 0.15rem;
+}
+.live-signin-btn:hover { filter: brightness(1.05); }
+
+
+.auth-popover-wrap {
+  position: relative;
+  display: inline-flex;
+  margin-left: 0.5rem;
+}
+
+.auth-popover-card {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 300px;
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  box-shadow: 0 18px 35px rgba(2, 6, 23, 0.2);
+  padding: 0.8rem;
+  z-index: 120;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.nav-right:hover .auth-popover-card,
+.nav-right:focus-within .auth-popover-card {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.auth-popover-title {
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  color: #1d4ed8;
+}
+
+.auth-popover-user {
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.auth-popover-line {
+  font-size: 0.78rem;
+  margin-bottom: 0.25rem;
+  color: #334155;
+}
+
+.auth-user-row {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.4rem 0.55rem;
+  margin-bottom: 0.35rem;
+  display: grid;
+  gap: 0.08rem;
+  font-size: 0.75rem;
+}
+
+.auth-signout-btn {
+  margin-top: 0.6rem;
+  width: 100%;
+}
+
+.docket-card {
+  border: 1px solid #dbeafe;
+  background: #f8fbff;
+  border-radius: 10px;
+  padding: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+
+.docket-progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.docket-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.docket-line {
+  margin: 0.22rem 0;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.query-bubble-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
+  flex: 1;
+}
+
+.query-bubble-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.query-bubble-step:not(:last-child)::after {
+  content: "";
+  width: 20px;
+  height: 2px;
+  border-radius: 4px;
+  background: #cbd5e1;
+}
+
+.query-bubble-step.connector-complete:not(:last-child)::after,
+.query-bubble-step.connector-active:not(:last-child)::after {
+  background: #86efac;
+}
+
+.query-bubble {
+  border-radius: 999px;
+  padding: 0.34rem 0.58rem;
+  font-size: 0.75rem;
+  border: 1px solid #cbd5e1;
+  background: #e2e8f0;
+  color: #475569;
+  font-weight: 700;
+}
+
+.query-bubble.completed {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.query-bubble.active {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #1e40af;
+}
+
+.docket-resolved-tick {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docket-resolved-tick svg {
+  width: 100%;
+  height: 100%;
+}
+
+.docket-resolved-circle {
+  fill: #dcfce7;
+  stroke: #16a34a;
+  stroke-width: 3;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: docketCircleDraw 0.6s ease-out forwards;
+}
+
+.docket-resolved-check {
+  fill: none;
+  stroke: #15803d;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: docketCheckDraw 0.35s ease-out 0.5s forwards;
+}
+
+@keyframes docketCircleDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes docketCheckDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }

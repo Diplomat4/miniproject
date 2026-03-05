@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | MK Print Solutions</title>
     <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
 </head>
 <body class="homepage" id="top">
     <header class="hp-header">
@@ -16,7 +17,7 @@
             </div>
             <nav class="hp-utils">
                 <a href="#" class="hp-util-link">Need Help? Contact Us <span class="hp-phone">2023202027</span></a>
-                <a href="LOGIN/Login.html" class="hp-util-link"><span class="hp-icon">&#128100;</span> Sign in</a>
+                <a href="Login.html" class="hp-util-link"><span class="hp-icon">&#128100;</span> Sign in</a>
             </nav>
         </div>
     </header>
@@ -61,7 +62,17 @@
                         <label for="queryEmail">Email Address</label>
                         <input id="queryEmail" name="query_email" type="email" required>
                     </div>
+                    <div class="form-group">
+                        <label for="queryCustomerIdentity">Registration No. (Mandatory)</label>
+                        <input id="queryCustomerIdentity" name="query_customer_identity" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="queryDescription">Description of the Issue</label>
+                        <textarea id="queryDescription" name="query_description" rows="4" required></textarea>
+                    </div>
+                    <p class="helper-text" style="margin-top:0;">Only registered customers can raise a query. Use your own Registration No. only.</p>
                     <button type="submit" class="btn btn-sm">Submit Query</button>
+                    <p id="queryFormMessage" class="query-form-message" hidden></p>
                 </form>
                 <div class="query-success" id="querySuccess" hidden>
                     <div class="query-success-icon" aria-hidden="true">
@@ -70,10 +81,9 @@
                             <path class="query-success-tick" d="M36 62 L54 79 L86 45"></path>
                         </svg>
                     </div>
-                    <p>Your query is finaly submitted</p>
+                    <p>Your query is successfully submitted</p>
                     <p>Your docket number is: <strong id="queryDocketNo"></strong></p>
-                    <p>Our team will contact you shortly.</p>
-                    <p>Thank you</p>
+                    <p>Thank you for your feedback.</p>
                 </div>
             </article>
         </section>
@@ -121,36 +131,11 @@
         </div>
         <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
-    <script>
-        (function () {
-            var form = document.getElementById('contactQueryForm');
-            var success = document.getElementById('querySuccess');
-            var docket = document.getElementById('queryDocketNo');
-            if (!form || !success || !docket) return;
-
-            function generateDocket() {
-                var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                var out = '';
-                for (var i = 0; i < 5; i++) {
-                    out += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                return out;
-            }
-
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                if (!form.checkValidity()) {
-                    form.reportValidity();
-                    return;
-                }
-                docket.textContent = generateDocket();
-                form.hidden = true;
-                success.hidden = false;
-            });
-        })();
-    </script>
 </body>
 </html>
+
+
+
 
 
 

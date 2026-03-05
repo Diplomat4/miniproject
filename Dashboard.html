@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 <body>
 
     <nav class="navbar">
-        <a class="brand" href="index.html" aria-label="Go to Homepage">
+        <a class="brand" href="Homepage.html" aria-label="Go to Homepage">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M6 9V2h12v7"></path>
                 <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
@@ -20,7 +20,7 @@
         </a>
 
         <div class="nav-links" aria-label="Primary navigation">
-            <a href="index.html">Home</a>
+            <a href="Homepage.html">Home</a>
             <a href="Dashboard.html" aria-current="page">Dashboard</a>
             <a href="#" id="nocOpenWindowLink">New Order Creation</a>
             <a href="#footerContact">Contact</a>
@@ -28,7 +28,7 @@
 
         <div class="nav-right">
             <span class="nav-meta">Created by: Mandal & Karmakar</span>
-            <a class="btn btn-secondary btn-sm" href="LOGIN/Login.html">Sign in</a>
+            <a class="btn btn-secondary btn-sm" href="Login.html">Sign in</a>
         </div>
     </nav>
 
@@ -48,6 +48,11 @@
                     <hr>
                     <p><strong>Dispatch:</strong> Inspection, Packaging, Labelling, Distribution.</p>
                 </div>
+            </div>
+            <div class="card">
+                <h2>Track Your Docket</h2>
+                <p class="helper-text">Track your raised query and latest status updates.</p>
+                <button type="button" class="btn btn-sm" id="trackDocketBtn">Track Your Docket</button>
             </div>
         </aside>
 
@@ -73,6 +78,11 @@
 
             <div class="card">
                 <h2>Live Production Status</h2>
+                <div id="liveStatusGuestPrompt" class="live-status-guest" hidden>
+                    <p>To Know Or Update About The Live Production Status Please Log in</p>
+                    <a class="btn live-signin-btn" href="Login.html">SIGN IN</a>
+                </div>
+                <div id="liveStatusContent">
                 <div class="table-toolbar" aria-label="Job table tools">
                     <div class="table-toolbar-left">
                         <div class="form-group" style="margin:0;">
@@ -126,6 +136,30 @@
                         <tbody>
                             </tbody>
                     </table>
+                </div>
+                </div>
+            </div>
+            <div class="card" id="docketTrackingPanel" hidden>
+                <h2>Docket Tracking</h2>
+                <div id="customerDocketList"></div>
+                <div id="employeeQueryActions" hidden>
+                    <button type="button" class="btn btn-secondary btn-sm" id="queryStatusToggleBtn">Query Status</button>
+                    <div id="employeeQueryStatusPanel" hidden>
+                        <div class="form-group">
+                            <label for="employeeQueryDocketSelect">Select Docket</label>
+                            <select id="employeeQueryDocketSelect"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="employeeQueryStatusSelect">Update Status</label>
+                            <select id="employeeQueryStatusSelect">
+                                <option value="QUERY RAISED">QUERY RAISED</option>
+                                <option value="QUERY VERIFIED">QUERY VERIFIED</option>
+                                <option value="CONTACTED CUSTOMER">CONTACTED CUSTOMER</option>
+                                <option value="QUERY RESOLVED">QUERY RESOLVED</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-sm" id="updateQueryStatusBtn">Update Query Status</button>
+                    </div>
                 </div>
             </div>
 
@@ -361,9 +395,9 @@
                 <div class="footer-sub">End-to-end publication workflow - Front-end prototype</div>
             </div>
             <div class="footer-links">
-                <a href="index.html">Home</a>
+                <a href="Homepage.html">Home</a>
                 <a href="Dashboard.html">Dashboard</a>
-                <a href="LOGIN/Login.html">Sign in</a>
+                <a href="Login.html">Sign in</a>
                 <a href="#newOrderCreationTab">New Order Creation</a>
             </div>
             <div class="footer-contact">
@@ -474,4 +508,8 @@
 <div class="cursor-follower"></div>
 
 </html>
+
+
+
+
 

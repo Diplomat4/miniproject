@@ -33,8 +33,195 @@ let jobs = [
         createdAt: Date.now() - 1000 * 60 * 10
     }
 ];
+const DEFAULT_JOBS = JSON.parse(JSON.stringify(jobs));
 
 const JOBS_STORAGE_KEY = 'mk_print_jobs_v1';
+const OPEN_TABS_STORAGE_KEY = 'mk_print_open_tabs_v1';
+const TAB_REGISTERED_KEY = 'mk_print_tab_registered_v1';
+const LAST_ACTIVE_TS_KEY = 'mk_print_last_active_ts_v1';
+const ACTIVE_STALE_MS = 15000;
+const TAB_REGISTRY_KEY = 'mk_print_tab_registry_v1';
+const TAB_ID_KEY = 'mk_print_tab_id_v1';
+const TAB_STALE_MS = 8000;
+const PURGE_JOB_IDS = new Set(['JOB-1654', 'JOB-3208', 'JOB-6430', 'JOB-1190']);
+let isFreshSiteSession = false;
+
+const USERS_STORAGE_KEY = 'mk_print_users_v1';
+const SESSION_STORAGE_KEY = 'mk_print_auth_session_v1';
+const QUERY_STORAGE_KEY = 'mk_print_queries_session_v1';
+const QUERY_STATUSES = ['QUERY RAISED', 'QUERY VERIFIED', 'CONTACTED CUSTOMER', 'QUERY RESOLVED'];
+
+const AUTH_QUERY_CHANNEL = 'mk_print_live_auth_query_v1';
+const WINDOW_NAME_KEY = '__mk_runtime_state_v1__';
+const runtimeTabId = `tab_${Math.random().toString(36).slice(2, 10)}`;
+const authQueryChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel(AUTH_QUERY_CHANNEL) : null;
+function readWindowState() {
+    try { return JSON.parse(window.name || '{}') || {}; } catch (_e) { return {}; }
+}
+function writeWindowState(next) {
+    try { window.name = JSON.stringify(next || {}); } catch (_e) {}
+}
+function getRuntimeUsersFromWindow() {
+    const state = readWindowState();
+    return state && state[WINDOW_NAME_KEY] && state[WINDOW_NAME_KEY].users ? state[WINDOW_NAME_KEY].users : {};
+}
+function setRuntimeUsersToWindow(users) {
+    const state = readWindowState();
+    state[WINDOW_NAME_KEY] = state[WINDOW_NAME_KEY] || {};
+    state[WINDOW_NAME_KEY].users = users || {};
+    writeWindowState(state);
+}
+function getRuntimeQueriesFromWindow() {
+    const state = readWindowState();
+    return state && state[WINDOW_NAME_KEY] && state[WINDOW_NAME_KEY].queries ? state[WINDOW_NAME_KEY].queries : [];
+}
+function setRuntimeQueriesToWindow(queries) {
+    const state = readWindowState();
+    state[WINDOW_NAME_KEY] = state[WINDOW_NAME_KEY] || {};
+    state[WINDOW_NAME_KEY].queries = Array.isArray(queries) ? queries : [];
+    writeWindowState(state);
+}
+let runtimeUsers = getRuntimeUsersFromWindow();
+let runtimeQueries = getRuntimeQueriesFromWindow();
+
+function cloneObj(obj) {
+    return JSON.parse(JSON.stringify(obj || {}));
+}
+function cloneArr(arr) {
+    return JSON.parse(JSON.stringify(Array.isArray(arr) ? arr : []));
+}
+
+if (authQueryChannel) {
+    authQueryChannel.onmessage = (evt) => {
+        const msg = evt && evt.data ? evt.data : {};
+        if (!msg || msg.from === runtimeTabId) return;
+
+        if (msg.type === 'users:update') {
+            runtimeUsers = cloneObj(msg.users);
+            setRuntimeUsersToWindow(cloneObj(runtimeUsers));
+            return;
+        }
+        if (msg.type === 'queries:update') {
+            runtimeQueries = cloneArr(msg.queries);
+            setRuntimeQueriesToWindow(cloneArr(runtimeQueries));
+            window.dispatchEvent(new Event('mk_queries_updated'));
+            return;
+        }
+        if (msg.type === 'users:request') {
+            authQueryChannel.postMessage({ type: 'users:response', from: runtimeTabId, to: msg.from, users: cloneObj(runtimeUsers) });
+            return;
+        }
+        if (msg.type === 'queries:request') {
+            authQueryChannel.postMessage({ type: 'queries:response', from: runtimeTabId, to: msg.from, queries: cloneArr(runtimeQueries) });
+            return;
+        }
+        if (msg.type === 'users:response' && msg.to === runtimeTabId) {
+            const incoming = cloneObj(msg.users);
+            if (Object.keys(incoming).length > Object.keys(runtimeUsers).length) {
+                runtimeUsers = incoming;
+                setRuntimeUsersToWindow(cloneObj(runtimeUsers));
+            }
+            return;
+        }
+        if (msg.type === 'queries:response' && msg.to === runtimeTabId) {
+            const incoming = cloneArr(msg.queries);
+            if (incoming.length > runtimeQueries.length) {
+                runtimeQueries = incoming;
+                setRuntimeQueriesToWindow(cloneArr(runtimeQueries));
+            }
+        }
+    };
+    authQueryChannel.postMessage({ type: 'users:request', from: runtimeTabId });
+    authQueryChannel.postMessage({ type: 'queries:request', from: runtimeTabId });
+}
+
+function loadUsers() {
+    return cloneObj(runtimeUsers);
+}
+function persistUsers(users) {
+    runtimeUsers = cloneObj(users);
+    setRuntimeUsersToWindow(cloneObj(runtimeUsers));
+    if (authQueryChannel) authQueryChannel.postMessage({ type: 'users:update', from: runtimeTabId, users: cloneObj(runtimeUsers) });
+}
+function ensureSeedUsers() {
+    const users = loadUsers();
+    let changed = false;
+    if (!users.empA) { users.empA = { userId:'empA', role:'employee', name:'emp A', password:'ABCD', mobile:'1234567890', email:'empA@mkprint.com', emailOtp:'2345', mobileOtp:'3456', registrationNo:'empA', createdAt:Date.now() }; changed = true; }
+    if (!users.custA) { users.custA = { userId:'custA', role:'customer', name:'cust A', password:'PQRS', mobile:'2345678910', email:'custA@mail.com', emailOtp:'6789', mobileOtp:'7890', registrationNo:'custA', createdAt:Date.now() }; changed = true; }
+    if (users.empA && users.empA.registrationNo !== 'empA') { users.empA.registrationNo = 'empA'; changed = true; }
+    if (users.custA && users.custA.registrationNo !== 'custA') { users.custA.registrationNo = 'custA'; changed = true; }
+    if (changed) persistUsers(users);
+}
+function getSession() { try { const raw = sessionStorage.getItem(SESSION_STORAGE_KEY); if (!raw) return null; const parsed = JSON.parse(raw); return parsed && parsed.userId ? parsed : null; } catch (_err) { return null; } }
+function isEmployee() { const s = getSession(); return !!s && s.role === 'employee'; }
+function isLoggedIn() { return !!getSession(); }
+function isDashboardPage() { return !!document.querySelector('#jobsTable'); }
+function hasEmployeeDashboardAccess() { return isEmployee(); }
+
+function loadQueries() {
+    return cloneArr(runtimeQueries);
+}
+
+function persistQueries(queries) {
+    runtimeQueries = cloneArr(queries);
+    setRuntimeQueriesToWindow(cloneArr(runtimeQueries));
+    window.dispatchEvent(new Event('mk_queries_updated'));
+    if (authQueryChannel) authQueryChannel.postMessage({ type: 'queries:update', from: runtimeTabId, queries: cloneArr(runtimeQueries) });
+}
+
+function generateDocketNo() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let out = '';
+    for (let i = 0; i < 5; i++) out += chars.charAt(Math.floor(Math.random() * chars.length));
+    return out;
+}
+
+function getVisibleQueriesForCurrentUser() {
+    const session = getSession();
+    if (!session) return [];
+    const all = loadQueries();
+    if (session.role === 'employee') return all;
+    if (session.role === 'customer') return all.filter((q) => q.customerUserId === session.userId);
+    return [];
+}
+
+function renderQueryBubbleLine(currentStatus) {
+    const idx = QUERY_STATUSES.indexOf(currentStatus);
+    return `<div class="query-bubble-line">${QUERY_STATUSES.map((s, i) => {
+        const cls = i < idx ? 'completed' : i === idx ? 'active' : '';
+        const stepCls = i < idx ? 'connector-complete' : i === idx ? 'connector-active' : '';
+        return `<span class="query-bubble-step ${stepCls}"><span class="query-bubble ${cls}">${s}</span></span>`;
+    }).join('')}</div>`;
+}
+
+function canCurrentUserSeeJob(job) {
+    const session = getSession();
+    if (!job || !job.id) return false;
+
+    // Dashboard tab should stay directly accessible without login.
+    // In signed-out mode, show public jobs and customer-origin jobs, not employee-private jobs.
+    if (!session) {
+        if (!job.createdByRole || !job.createdByUserId) return true;
+        return job.createdByRole === 'customer';
+    }
+
+    // System/default jobs remain visible to all logged-in users.
+    if (!job.createdByRole || !job.createdByUserId) return true;
+
+    if (job.createdByRole === 'customer') {
+        return session.role === 'employee' || session.userId === job.createdByUserId;
+    }
+
+    if (job.createdByRole === 'employee') {
+        return session.role === 'employee';
+    }
+
+    return true;
+}
+
+function getVisibleJobsForCurrentUser() {
+    return jobs.filter((j) => canCurrentUserSeeJob(j));
+}
 
 function loadStoredJobs() {
     try {
@@ -55,16 +242,110 @@ function persistJobs() {
     }
 }
 
-(() => {
-    const stored = loadStoredJobs();
-    if (!stored.length) return;
-    const seen = new Set(jobs.map((j) => j.id));
-    stored.forEach((job) => {
-        if (!job || !job.id || seen.has(job.id)) return;
-        jobs.push(job);
-        seen.add(job.id);
+function resetJobsToDefault() {
+    jobs = JSON.parse(JSON.stringify(DEFAULT_JOBS));
+}
+
+function purgeBlockedJobs() {
+    const before = jobs.length;
+    jobs = jobs.filter((j) => !j || !j.id ? false : !PURGE_JOB_IDS.has(String(j.id).toUpperCase()));
+    return before !== jobs.length;
+}
+
+function markSiteActiveNow() {
+    localStorage.setItem(LAST_ACTIVE_TS_KEY, String(Date.now()));
+}
+
+function readTabRegistry() {
+    try {
+        const raw = localStorage.getItem(TAB_REGISTRY_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (_err) {
+        return {};
+    }
+}
+
+function writeTabRegistry(registry) {
+    localStorage.setItem(TAB_REGISTRY_KEY, JSON.stringify(registry || {}));
+}
+
+function pruneStaleTabs(registry, nowTs) {
+    const now = Number(nowTs || Date.now());
+    const next = {};
+    Object.entries(registry || {}).forEach(([tabId, ts]) => {
+        const age = now - Number(ts || 0);
+        if (age <= TAB_STALE_MS) next[tabId] = Number(ts || 0);
     });
-})();
+    return next;
+}
+
+function registerSiteTabLifecycle() {
+    if (sessionStorage.getItem(TAB_REGISTERED_KEY) === '1') return;
+    sessionStorage.setItem(TAB_REGISTERED_KEY, '1');
+
+    let tabId = sessionStorage.getItem(TAB_ID_KEY);
+    if (!tabId) {
+        tabId = `tab_${Math.random().toString(36).slice(2)}_${Date.now()}`;
+        sessionStorage.setItem(TAB_ID_KEY, tabId);
+    }
+
+    const now = Date.now();
+    let registry = pruneStaleTabs(readTabRegistry(), now);
+    isFreshSiteSession = Object.keys(registry).length === 0;
+    registry[tabId] = now;
+    writeTabRegistry(registry);
+    localStorage.setItem(OPEN_TABS_STORAGE_KEY, String(Object.keys(registry).length));
+    markSiteActiveNow();
+
+    const heartbeat = setInterval(() => {
+        const liveNow = Date.now();
+        let liveRegistry = pruneStaleTabs(readTabRegistry(), liveNow);
+        liveRegistry[tabId] = liveNow;
+        writeTabRegistry(liveRegistry);
+        localStorage.setItem(OPEN_TABS_STORAGE_KEY, String(Object.keys(liveRegistry).length));
+        markSiteActiveNow();
+    }, 3000);
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) markSiteActiveNow();
+    });
+
+    window.addEventListener('beforeunload', () => {
+        clearInterval(heartbeat);
+        let liveRegistry = pruneStaleTabs(readTabRegistry(), Date.now());
+        delete liveRegistry[tabId];
+        writeTabRegistry(liveRegistry);
+        const next = Object.keys(liveRegistry).length;
+        localStorage.setItem(OPEN_TABS_STORAGE_KEY, String(next));
+        if (next === 0) {
+            localStorage.removeItem(JOBS_STORAGE_KEY);
+            sessionStorage.removeItem(QUERY_STORAGE_KEY);
+        }
+        sessionStorage.removeItem(TAB_REGISTERED_KEY);
+    });
+}
+
+function initTabScopedJobs() {
+    const hasDashboard = !!document.querySelector('#jobsTable');
+    if (!hasDashboard) return;
+
+    if (isFreshSiteSession) {
+        resetJobsToDefault();
+        purgeBlockedJobs();
+        persistJobs();
+        markSiteActiveNow();
+        return;
+    }
+
+    const stored = loadStoredJobs();
+    if (stored.length) jobs = stored;
+    if (!stored.length) {
+        resetJobsToDefault();
+        persistJobs();
+    }
+    if (purgeBlockedJobs()) persistJobs();
+    markSiteActiveNow();
+}
 
 const tableBody = document.querySelector('#jobsTable tbody');
 const totalJobsEl = $('totalJobs');
@@ -87,6 +368,85 @@ function showToast(title, message, variant = 'success', timeoutMs = 2800) {
     el.innerHTML = `<div class="toast-title">${String(title)}</div><div class="toast-body">${String(message)}</div>`;
     toastContainer.appendChild(el);
     setTimeout(() => el.remove(), timeoutMs);
+}
+
+function signOutCurrentUser() {
+    sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    window.location.href = 'Homepage.html';
+}
+
+function initAuthMenu() {
+    const session = getSession();
+    const users = loadUsers();
+
+    function buildPopover() {
+        const pop = document.createElement('div');
+        pop.className = 'auth-popover-card';
+        if (session) {
+            const user = users[session.userId] || {};
+            pop.innerHTML = `
+                <div class="auth-popover-title">Account</div>
+                <div class="auth-popover-user">${user.name || session.userId}</div>
+                <div class="auth-popover-line">Role: ${session.role || '-'}</div>
+                <div class="auth-popover-line">User ID: ${session.userId || '-'}</div>
+                <div class="auth-popover-line">Registration No: ${user.registrationNo || '-'}</div>
+                <div class="auth-popover-line">Email: ${user.email || '-'}</div>
+                <button type="button" class="btn btn-danger btn-sm auth-signout-btn">Sign out</button>
+            `;
+            const signoutBtn = pop.querySelector('.auth-signout-btn');
+            if (signoutBtn) signoutBtn.addEventListener('click', signOutCurrentUser);
+            return pop;
+        }
+        const topUsers = Object.values(users).slice(0, 8);
+        const rows = topUsers.map((u) => `
+            <div class="auth-user-row">
+                <strong>${u.name || '-'}</strong>
+                <span>${u.role || '-'}</span>
+                <span>${u.userId || '-'}</span>
+                <span>${u.email || '-'}</span>
+            </div>
+        `).join('');
+        pop.innerHTML = `
+            <div class="auth-popover-title">Available Accounts</div>
+            ${rows || '<div class="auth-popover-line">No users found.</div>'}
+            <a class="btn btn-sm" href="Login.html">Sign in now</a>
+        `;
+        return pop;
+    }
+
+    const navRight = document.querySelector('.nav-right');
+    if (navRight) {
+        let trigger = navRight.querySelector('.btn');
+        if (!trigger) {
+            trigger = document.createElement('a');
+            trigger.className = 'btn btn-secondary btn-sm';
+            navRight.appendChild(trigger);
+        }
+        const existing = navRight.querySelector('.auth-popover-wrap');
+        if (existing) existing.remove();
+        trigger.href = session ? 'javascript:void(0)' : 'Login.html';
+        trigger.textContent = session ? `Signed in: ${session.userId}` : 'Sign in';
+        trigger.setAttribute('aria-haspopup', 'true');
+        const wrap = document.createElement('div');
+        wrap.className = 'auth-popover-wrap';
+        wrap.appendChild(buildPopover());
+        trigger.insertAdjacentElement('afterend', wrap);
+    }
+
+    const utilSignIn = document.querySelector('.hp-utils a[href="Login.html"]');
+    if (utilSignIn) {
+        const existingWrap = utilSignIn.parentElement && utilSignIn.parentElement.querySelector('.auth-popover-wrap');
+        if (existingWrap) existingWrap.remove();
+        utilSignIn.textContent = session ? `Signed in (${session.userId})` : 'Sign in';
+        if (!utilSignIn.querySelector('.hp-icon')) {
+            utilSignIn.innerHTML = `<span class="hp-icon">&#128100;</span> ${session ? `Signed in (${session.userId})` : 'Sign in'}`;
+        }
+        utilSignIn.href = session ? 'javascript:void(0)' : 'Login.html';
+        const wrap = document.createElement('div');
+        wrap.className = 'auth-popover-wrap';
+        wrap.appendChild(buildPopover());
+        utilSignIn.insertAdjacentElement('afterend', wrap);
+    }
 }
 
 function confirmDialog({ title = 'Confirm', message = 'Are you sure?', confirmText = 'Confirm' } = {}) {
@@ -171,20 +531,31 @@ function renderSubstages(stageName, currentSubstep) {
 function renderDashboard() {
     if (!tableBody || !totalJobsEl || !prepressEl || !printEl || !dispatchEl) return;
 
-    totalJobsEl.textContent = jobs.length;
-    prepressEl.textContent = jobs.filter((j) => j.stage === 1).length;
-    printEl.textContent = jobs.filter((j) => j.stage === 2).length;
-    dispatchEl.textContent = jobs.filter((j) => j.stage === stages.length - 1).length;
+    const loggedIn = isLoggedIn();
+    const statsGrid = document.querySelector('.stats-grid');
+    if (statsGrid) statsGrid.style.display = loggedIn ? '' : 'none';
+
+    const guestPrompt = $('liveStatusGuestPrompt');
+    const liveStatusContent = $('liveStatusContent');
+    if (guestPrompt && liveStatusContent) {
+        guestPrompt.hidden = loggedIn;
+        liveStatusContent.style.display = loggedIn ? '' : 'none';
+        if (!loggedIn) return;
+    }
+
+    const userJobs = getVisibleJobsForCurrentUser();
+    totalJobsEl.textContent = userJobs.filter((j) => !j.cancelled).length;
+    prepressEl.textContent = userJobs.filter((j) => !j.cancelled && j.stage === 1).length;
+    printEl.textContent = userJobs.filter((j) => !j.cancelled && j.stage === 2).length;
+    dispatchEl.textContent = userJobs.filter((j) => !j.cancelled && j.stage === stages.length - 1).length;
     tableBody.innerHTML = '';
 
     const { search, type, stageName, sort } = getJobFilters();
     const stageIdx = stageName === 'All' ? null : stages.indexOf(stageName);
 
-    let visibleJobs = jobs.filter((j) => (type === 'All' ? true : j.type === type));
+    let visibleJobs = userJobs.filter((j) => (type === 'All' ? true : j.type === type));
     if (stageIdx !== null && stageIdx >= 0) visibleJobs = visibleJobs.filter((j) => j.stage === stageIdx);
-    if (search) {
-        visibleJobs = visibleJobs.filter((j) => `${j.id} ${j.client} ${j.title}`.toLowerCase().includes(search));
-    }
+    if (search) visibleJobs = visibleJobs.filter((j) => `${j.id} ${j.client} ${j.title}`.toLowerCase().includes(search));
     visibleJobs.sort((a, b) => (sort === 'Oldest' ? (a.createdAt || 0) - (b.createdAt || 0) : (b.createdAt || 0) - (a.createdAt || 0)));
 
     if (!visibleJobs.length) {
@@ -196,18 +567,11 @@ function renderDashboard() {
         normalizeJobProgress(job);
         const index = jobs.findIndex((j) => j.id === job.id);
         const tr = document.createElement('tr');
-        
         tr.style.opacity = '0';
         tr.style.animation = `slideInLeft 0.4s ease-out ${loopIndex * 0.08}s forwards`;
 
-        const badgeClass =
-            job.type === 'Academic' ? 'badge-academic' :
-            job.type === 'Trade' ? 'badge-trade' :
-            job.type === 'Promotional' ? 'badge-promo' : 'badge-default';
-
-        const priorityBadge = job.priority === 'Urgent'
-            ? '<span class="badge" style="background:#fee2e2; color:#991b1b; margin-left:8px;">Urgent</span>'
-            : '<span class="badge" style="background:#e2e8f0; color:#334155; margin-left:8px;">Normal</span>';
+        const badgeClass = job.type === 'Academic' ? 'badge-academic' : job.type === 'Trade' ? 'badge-trade' : job.type === 'Promotional' ? 'badge-promo' : 'badge-default';
+        const priorityBadge = job.priority === 'Urgent' ? '<span class="badge" style="background:#fee2e2; color:#991b1b; margin-left:8px;">Urgent</span>' : '<span class="badge" style="background:#e2e8f0; color:#334155; margin-left:8px;">Normal</span>';
 
         let workflowHTML = '<div class="workflow-steps"><div class="workflow-bar"></div>';
         stages.forEach((step, sIndex) => {
@@ -219,29 +583,208 @@ function renderDashboard() {
 
         const currentSubsteps = getSubstepsForStage(job.stage);
         const atFinalSubstep = job.stage === stages.length - 1 && job.substep >= Math.max(currentSubsteps.length - 1, 0);
+        const lockedActions = !hasEmployeeDashboardAccess();
 
         tr.innerHTML = `
             <td><strong>${job.id}</strong></td>
             <td>
-                <div style="font-weight:600">${job.title}${priorityBadge}</div>
+                <div style="font-weight:600">${job.cancelled ? '[Cancelled] ' : ''}${job.title}${priorityBadge}</div>
                 <div style="font-size:0.8rem; color:var(--text-sub)">${job.client} \u2022 ${job.quantity} units</div>
             </td>
             <td><span class="badge ${badgeClass}">${job.type}</span></td>
             <td>
-                <div style="font-weight:600; color:var(--primary); margin-bottom:0.35rem;">${stages[job.stage]}</div>
-                <div style="display:flex; flex-wrap:wrap;">${renderSubstages(stages[job.stage], job.substep)}</div>
+                <div style="font-weight:600; color:var(--primary); margin-bottom:0.35rem;">${job.cancelled ? 'Cancelled' : stages[job.stage]}</div>
+                <div style="display:flex; flex-wrap:wrap;">${job.cancelled ? '<span class="badge" style="background:#fee2e2; color:#991b1b;">Job Cancelled</span>' : renderSubstages(stages[job.stage], job.substep)}</div>
             </td>
             <td style="width:250px;">${workflowHTML}</td>
-            <td>
-                <button class="action-btn btn-advance" onclick="advanceStage(${index})">${atFinalSubstep ? 'Celebrate' : 'Next &rarr;'}</button>
-                <button class="action-btn btn-delete" onclick="deleteJob(${index})">&times;</button>
-            </td>
+            <td>${lockedActions || job.cancelled ? '' : `<button class="action-btn btn-advance" onclick="advanceStage(${index})">${atFinalSubstep ? 'Celebrate' : 'Next &rarr;'}</button><button class="action-btn btn-delete" onclick="deleteJob(${index})">&times;</button>`}</td>
         `;
         tableBody.appendChild(tr);
     });
 }
 
+function initContactQueryForm() {
+    const form = $('contactQueryForm');
+    const success = $('querySuccess');
+    const docket = $('queryDocketNo');
+    const identityEl = $('queryCustomerIdentity');
+    const descEl = $('queryDescription');
+    const messageEl = $('queryFormMessage');
+    if (!form || !success || !docket || !identityEl || !descEl || !messageEl) return;
+
+    let messageTimer = null;
+    function showInlineMessage(text, kind, redirectToRegister) {
+        if (messageTimer) {
+            clearTimeout(messageTimer);
+            messageTimer = null;
+        }
+        messageEl.textContent = text;
+        messageEl.className = `query-form-message ${kind || 'error'}`;
+        messageEl.hidden = false;
+        messageTimer = setTimeout(() => {
+            messageEl.hidden = true;
+            if (redirectToRegister) window.location.href = 'Register.html';
+        }, 8000);
+    }
+
+    function normalizeText(v) {
+        return String(v || '').trim().toLowerCase();
+    }
+    function normalizeContact(v) {
+        return String(v || '').replace(/\D/g, '');
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const users = loadUsers();
+        const identity = String(identityEl.value || '').trim();
+        const regUpper = identity.toUpperCase();
+        const matched = Object.values(users).find((u) => String(u.registrationNo || '').trim().toUpperCase() === regUpper);
+
+        if (!matched) {
+            showInlineMessage('Invalid registration details. Redirecting to Register Here page.', 'error', true);
+            return;
+        }
+
+        if (String(matched.role || '').toLowerCase() === 'employee') {
+            showInlineMessage('NO EMPLOYEE CAN RAISE A QUERY', 'error', false);
+            return;
+        }
+
+        const inputName = normalizeText($('queryName')?.value);
+        const inputEmail = normalizeText($('queryEmail')?.value);
+        const inputContact = normalizeContact($('queryContact')?.value);
+        const validName = inputName && inputName === normalizeText(matched.name);
+        const validEmail = inputEmail && inputEmail === normalizeText(matched.email);
+        const validContact = inputContact && inputContact === normalizeContact(matched.mobile);
+        if (!validName || !validEmail || !validContact) {
+            showInlineMessage('Entered details do not match your registration record. Redirecting to Register Here page.', 'error', true);
+            return;
+        }
+
+        messageEl.hidden = true;
+        const queries = loadQueries();
+        const docketNo = generateDocketNo();
+        queries.unshift({
+            docketNo,
+            customerUserId: String(matched.userId || '').trim(),
+            customerName: matched.name || matched.userId || '-',
+            customerRegNo: String(matched.registrationNo || '').trim() || '-',
+            contact: String($('queryContact')?.value || ''),
+            email: String($('queryEmail')?.value || ''),
+            description: String(descEl.value || ''),
+            status: QUERY_STATUSES[0],
+            createdAt: Date.now()
+        });
+        persistQueries(queries);
+        docket.textContent = docketNo;
+        form.hidden = true;
+        success.hidden = false;
+        showToast('Query raised', `${docketNo} has been created.`, 'success');
+    });
+}
+
+function initQueryTrackingWidgets() {
+    const trackBtn = $('trackDocketBtn');
+    const panel = $('docketTrackingPanel');
+    const list = $('customerDocketList');
+    const employeeActions = $('employeeQueryActions');
+    const toggleBtn = $('queryStatusToggleBtn');
+    const employeePanel = $('employeeQueryStatusPanel');
+    const docketSelect = $('employeeQueryDocketSelect');
+    const statusSelect = $('employeeQueryStatusSelect');
+    const updateBtn = $('updateQueryStatusBtn');
+    if (!trackBtn || !panel || !list) return;
+
+    const session = getSession();
+    if (!session) {
+        trackBtn.disabled = true;
+        trackBtn.title = 'Login required';
+        return;
+    }
+
+    function renderList() {
+        const activeSession = getSession();
+        const visible = getVisibleQueriesForCurrentUser().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        if (!session || !visible.length) {
+            list.innerHTML = '<p class="helper-text">No query found for this account.</p>';
+        } else {
+            list.innerHTML = visible.map((q) => `
+                <article class="docket-card">
+                    <div class="docket-title-row">
+                        <strong>Docket: ${q.docketNo}</strong>
+                        <span class="badge">${q.status}</span>
+                    </div>
+                    <p class="docket-line"><strong>Customer:</strong> ${q.customerName} (${q.customerUserId})</p>
+                    <p class="docket-line"><strong>Customer Reg No:</strong> ${q.customerRegNo}</p>
+                    <p class="docket-line"><strong>Issue:</strong> ${q.description}</p>
+                    <div class="docket-progress-row">
+                        ${renderQueryBubbleLine(q.status)}
+                        ${q.status === 'QUERY RESOLVED' ? `
+                            <div class="docket-resolved-tick" aria-label="Query resolved" title="Query resolved">
+                                <svg viewBox="0 0 60 60" role="img" aria-hidden="true">
+                                    <circle class="docket-resolved-circle" cx="30" cy="30" r="24"></circle>
+                                    <path class="docket-resolved-check" d="M18 31 L27 40 L43 22"></path>
+                                </svg>
+                            </div>
+                        ` : ''}
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        const isEmp = !!activeSession && activeSession.role === 'employee';
+        if (employeeActions) employeeActions.hidden = !isEmp;
+        if (isEmp && docketSelect) {
+            docketSelect.innerHTML = visible.map((q) => `<option value="${q.docketNo}">${q.docketNo} - ${q.customerUserId}</option>`).join('');
+        }
+    }
+
+    trackBtn.addEventListener('click', () => {
+        panel.hidden = false;
+        renderList();
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    window.addEventListener('mk_queries_updated', () => {
+        if (!panel.hidden) renderList();
+    });
+
+    if (toggleBtn && employeePanel) {
+        toggleBtn.addEventListener('click', () => {
+            employeePanel.hidden = !employeePanel.hidden;
+            if (!employeePanel.hidden) renderList();
+        });
+    }
+
+    if (updateBtn && docketSelect && statusSelect) {
+        updateBtn.addEventListener('click', () => {
+            const session = getSession();
+            if (!session || session.role !== 'employee') {
+                showToast('Restricted', 'Only employees can update query status.', 'warning');
+                return;
+            }
+            const docketNo = docketSelect.value;
+            const nextStatus = statusSelect.value;
+            const queries = loadQueries();
+            const target = queries.find((q) => q.docketNo === docketNo);
+            if (!target) return;
+            target.status = nextStatus;
+            target.updatedAt = Date.now();
+            target.updatedBy = session.userId;
+            persistQueries(queries);
+            renderList();
+            showToast('Status updated', `${docketNo} -> ${nextStatus}`, 'success');
+        });
+    }
+}
 window.advanceStage = function(index) {
+    if (!hasEmployeeDashboardAccess()) return;
     const job = jobs[index];
     if (!job) return;
     normalizeJobProgress(job);
@@ -271,18 +814,20 @@ window.advanceStage = function(index) {
 };
 
 window.deleteJob = function(index) {
+    if (!hasEmployeeDashboardAccess()) return;
     const job = jobs[index];
     if (!job) return;
     confirmDialog({
         title: 'Cancel job?',
-        message: `This will remove ${job.id} from the dashboard.`,
+        message: `This will mark ${job.id} as cancelled.`,
         confirmText: 'Cancel job'
     }).then((ok) => {
         if (!ok) return;
-        const removed = jobs.splice(index, 1)[0];
+        job.cancelled = true;
+        job.cancelledAt = Date.now();
         persistJobs();
         renderDashboard();
-        showToast('Job cancelled', removed ? removed.id : 'Job removed', 'warning');
+        showToast('Job cancelled', `${job.id} marked as cancelled.`, 'warning');
     });
 };
 
@@ -412,6 +957,8 @@ function initManuscriptWorkspace() {
             priority: 'Normal',
             stage: 0,
             substep: 0,
+            createdByRole: 'employee',
+            createdByUserId: 'system',
             createdAt: Date.now()
         };
 
@@ -504,6 +1051,17 @@ function wireJobTableTools() {
         el.addEventListener('input', renderDashboard);
         el.addEventListener('change', renderDashboard);
     });
+}
+
+function resetJobTableView() {
+    const searchEl = $('jobSearch');
+    const typeEl = $('jobTypeFilter');
+    const stageEl = $('jobStageFilter');
+    const sortEl = $('jobSort');
+    if (searchEl) searchEl.value = '';
+    if (typeEl) typeEl.value = 'All';
+    if (stageEl) stageEl.value = 'All';
+    if (sortEl) sortEl.value = 'Newest';
 }
 
 function initNewOrderCreation() {
@@ -861,6 +1419,8 @@ function initNewOrderCreation() {
     if (completePaymentBtn) {
         completePaymentBtn.addEventListener('click', () => {
             const method = getSelectedPaymentMethod();
+            const session = getSession();
+            if (!session) { showToast('Login required', 'Please sign in before creating a new order.', 'warning'); return; }
             const newId = generateId();
             const productType = fields.productType?.value || 'Trade';
             const jobTitle = (selectedFileName || 'Untitled Job').replace(/\.[^.]+$/, '');
@@ -871,13 +1431,15 @@ function initNewOrderCreation() {
             const jobType = productType === 'Trade' ? 'Trade' : 'Promotional';
             const job = {
                 id: newId,
-                client: 'New Order Creation',
+                client: session.name || session.userId || 'New Order Creation',
                 title: jobTitle,
                 type: jobType,
                 quantity: qty,
                 stage: 0,
                 substep: 0,
                 priority: 'Normal',
+                createdByRole: session.role,
+                createdByUserId: session.userId,
                 createdAt: Date.now(),
                 orderMeta: {
                     productType,
@@ -896,7 +1458,9 @@ function initNewOrderCreation() {
 
             jobs.unshift(job);
             persistJobs();
+            resetJobTableView();
             renderDashboard();
+            showToast('New job added', `${newId} added to Live Production Status.`, 'success');
 
             finalizedOrder = {
                 id: newId,
@@ -946,6 +1510,10 @@ function initNewOrderCreation() {
     if (openWindowLink) {
         openWindowLink.addEventListener('click', (e) => {
             e.preventDefault();
+            if (!isLoggedIn()) {
+                window.location.href = 'Login.html';
+                return;
+            }
             openWindow();
         });
     }
@@ -961,7 +1529,14 @@ function initNewOrderCreation() {
     root.setAttribute('aria-hidden', 'true');
 }
 
+ensureSeedUsers();
+registerSiteTabLifecycle();
+const hasDashboard = !!document.querySelector('#jobsTable');
+initTabScopedJobs();
+initAuthMenu();
 renderDashboard();
+initContactQueryForm();
+initQueryTrackingWidgets();
 initManuscriptWorkspace();
 wireJobTableTools();
 initNewOrderCreation();
@@ -974,3 +1549,21 @@ document.addEventListener('mousemove', (e) => {
         follower.style.top = e.clientY + 'px';
     }
 });
+
+window.addEventListener('storage', (event) => {
+    if (event.key === JOBS_STORAGE_KEY) {
+        const stored = loadStoredJobs();
+        if (stored && Array.isArray(stored)) {
+            jobs = stored;
+            renderDashboard();
+        }
+    }
+});
+
+
+
+
+
+
+
+
