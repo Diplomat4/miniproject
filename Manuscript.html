@@ -5,130 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manuscript | MK Print Solutions</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root { --primary: #1d4ed8; }
-        .category-header {
-            background: linear-gradient(135deg, #18223a, #0f172a);
-            border-bottom: 1px solid var(--border);
-            padding: 3rem 1rem 2rem;
-        }
-        .step-shell {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem 1rem;
-            background: linear-gradient(180deg, #111827, #0f172a);
-        }
-        .step-card {
-            width: min(980px, 100%);
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(148, 163, 184, 0.26);
-            border-radius: 16px;
-            padding: clamp(1rem, 2.2vw, 1.8rem);
-            text-align: center;
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
-            cursor: pointer;
-            transform: translateY(0);
-            opacity: 1;
-            transition: transform 0.35s ease, opacity 0.35s ease, box-shadow 0.25s ease;
-        }
-        .step-card:hover { box-shadow: 0 24px 48px rgba(0, 0, 0, 0.42); }
-        .step-card.is-exit { opacity: 0; transform: translateY(-14px); }
-        .step-card h2 {
-            margin: 0 0 1rem;
-            font-size: clamp(1.4rem, 2.8vw, 2rem);
-            color: #e2e8f0;
-            display: inline-block;
-            padding: 0.35rem 0.85rem 0.45rem;
-            border-radius: 10px;
-        }
-        .title-main {
-            font-weight: 900;
-            letter-spacing: 0.02em;
-            background: rgba(37, 99, 235, 0.26);
-            border: 1px solid rgba(147, 197, 253, 0.42);
-            box-shadow: 0 8px 22px rgba(30, 64, 175, 0.3);
-        }
-        .title-sub {
-            font-weight: 700;
-            font-style: italic;
-            background: rgba(30, 41, 59, 0.65);
-            border: 1px solid rgba(148, 163, 184, 0.36);
-        }
-        .step-media {
-            display: grid;
-            gap: 0.85rem;
-            grid-template-columns: 1fr;
-            margin: 0.85rem 0 1.1rem;
-        }
-        .step-media.two {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .step-media.four {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .step-img-wrap {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: zoom-in;
-        }
-        .step-media img {
-            width: 100%;
-            height: clamp(170px, 24vw, 250px);
-            object-fit: cover;
-            display: block;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-        }
-        .step-img-wrap::after {
-            content: "Click to Enlarge";
-            position: absolute;
-            inset: auto 0 0 0;
-            padding: 0.55rem;
-            font-size: 0.82rem;
-            letter-spacing: 0.03em;
-            color: #e2e8f0;
-            background: linear-gradient(180deg, rgba(0,0,0,0), rgba(2,6,23,0.88));
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .step-img-wrap:hover::after { opacity: 1; }
-        .step-card p {
-            margin: 0.65rem 0 0;
-            color: #cbd5e1;
-            line-height: 1.7;
-            font-size: clamp(0.95rem, 1.45vw, 1.02rem);
-            text-align: left;
-        }
-        .img-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.84);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            z-index: 1000;
-        }
-        .img-modal.show { display: flex; }
-        .img-modal img {
-            max-width: min(1100px, 96vw);
-            max-height: 90vh;
-            border-radius: 12px;
-            border: 1px solid rgba(148, 163, 184, 0.5);
-        }
-        @media (max-width: 780px) {
-            .step-media.two, .step-media.four { grid-template-columns: 1fr; }
-            .step-card p { font-size: 0.93rem; }
-        }
-    </style>
     <script src="main.js" defer></script>
 </head>
-<body class="homepage" id="top">
+<body class="homepage service-step-page manuscript-page" id="top">
     <header class="hp-header">
         <div class="hp-header-inner">
-            <a href="Homepage.html" class="hp-logo">MK Print Solutions</a>
+            <a href="index.html" class="hp-logo">MK Print Solutions</a>
             <div class="hp-search-wrap">
                 <input type="search" class="hp-search" placeholder="Search" aria-label="Search">
                 <span class="hp-search-icon" aria-hidden="true">&#128269;</span>
@@ -142,7 +24,7 @@
     </header>
         <nav class="hp-nav">
         <div class="hp-nav-inner hp-nav-main">
-            <a href="Homepage.html" class="hp-main-link">Home</a>
+            <a href="index.html" class="hp-main-link">Home</a>
             <a href="AboutUs.html" class="hp-main-link">About Us</a>
             <div class="hp-menu-item hp-menu-dropdown">
                 <a href="javascript:void(0)" class="hp-main-link hp-main-link-active" aria-haspopup="true" aria-expanded="false">Services</a>
@@ -165,7 +47,7 @@
                     </a>
                 </div>
             </div>
-            <a href="DashboardNew.html" class="hp-main-link">Dashboard</a>
+            <a href="Dashboard.html" class="hp-main-link">Dashboard</a>
             <a href="ContactUs.html" class="hp-main-link">Contact Us</a>
         </div>
     </nav>
@@ -185,10 +67,10 @@
                 <div class="footer-sub">Modular publication workflow &bull; Front-end prototype</div>
             </div>
                         <div class="footer-links">
-                <a href="Homepage.html">Home</a>
+                <a href="index.html">Home</a>
                 <a href="AboutUs.html">About Us</a>
                 <a href="Services.html">Services</a>
-                <a href="DashboardNew.html">Dashboard</a>
+                <a href="Dashboard.html">Dashboard</a>
                 <a href="ContactUs.html">Contact Us</a>
             </div>
             <div class="footer-contact">
@@ -200,59 +82,12 @@
         <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
     <div class="img-modal" id="imgModal"><img id="imgModalPhoto" alt="Expanded image"></div>
-    <script>
-        (function () {
-            var steps = [
-                { title: "Manuscript", layout: "one", images: ["images/MANUSCRIPT EDITING.jpg"], paragraphs: ["Manuscript intake, editorial validation, and structural checks are completed here before detailed prepress execution begins.", "This stage ensures content readiness, approval integrity, and clean handoff quality for design, proofing, and plate preparation."] }
-            ];
-
-            var card = document.getElementById("stepCard");
-            var modal = document.getElementById("imgModal");
-            var modalPhoto = document.getElementById("imgModalPhoto");
-            if (!card || !modal || !modalPhoto) return;
-
-            var index = 0;
-            var locked = false;
-
-            function mediaClass(layout) { return layout === "four" ? "step-media four" : layout === "two" ? "step-media two" : "step-media"; }
-
-            function render(i) {
-                var step = steps[i];
-                var titleClass = i === 0 ? "title-main" : "title-sub";
-                var images = step.images.map(function (src) {
-                    return '<figure class="step-img-wrap"><img src="' + src + '" alt="' + step.title + '" loading="lazy"></figure>';
-                }).join("");
-                var paragraphs = step.paragraphs.map(function (text) {
-                    return "<p>" + text + "</p>";
-                }).join("");
-                card.innerHTML = "<h2 class='" + titleClass + "'>" + step.title + "</h2><div class='" + mediaClass(step.layout) + "'>" + images + "</div>" + paragraphs;
-            }
-
-            function nextStep() {
-                if (locked || steps.length < 2) return;
-                locked = true;
-                card.classList.add("is-exit");
-                setTimeout(function () {
-                    index = (index + 1) % steps.length;
-                    render(index);
-                    card.classList.remove("is-exit");
-                    locked = false;
-                }, 280);
-            }
-            card.addEventListener("click", function (e) {
-                var img = e.target.closest(".step-img-wrap img");
-                if (!img) return;
-                e.stopPropagation();
-                modalPhoto.src = img.src;
-                modal.classList.add("show");
-            }, true);
-
-            modal.addEventListener("click", function () { modal.classList.remove("show"); });
-            render(index);
-        })();
-    </script>
 </body>
 </html>
+
+
+
+
 
 
 

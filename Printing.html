@@ -5,130 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Printing | MK Print Solutions</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root { --primary: #0891b2; }
-        .category-header {
-            background: linear-gradient(135deg, #13273a, #0f172a);
-            border-bottom: 1px solid var(--border);
-            padding: 3rem 1rem 2rem;
-        }
-        .step-shell {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem 1rem;
-            background: linear-gradient(180deg, #111827, #0f172a);
-        }
-        .step-card {
-            width: min(980px, 100%);
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(148, 163, 184, 0.26);
-            border-radius: 16px;
-            padding: clamp(1rem, 2.2vw, 1.8rem);
-            text-align: center;
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
-            cursor: pointer;
-            transform: translateY(0);
-            opacity: 1;
-            transition: transform 0.35s ease, opacity 0.35s ease, box-shadow 0.25s ease;
-        }
-        .step-card:hover { box-shadow: 0 24px 48px rgba(0, 0, 0, 0.42); }
-        .step-card.is-exit { opacity: 0; transform: translateY(-14px); }
-        .step-card h2 {
-            margin: 0 0 1rem;
-            font-size: clamp(1.4rem, 2.8vw, 2rem);
-            color: #e2e8f0;
-            display: inline-block;
-            padding: 0.35rem 0.85rem 0.45rem;
-            border-radius: 10px;
-        }
-        .title-main {
-            font-weight: 900;
-            letter-spacing: 0.02em;
-            background: rgba(8, 145, 178, 0.28);
-            border: 1px solid rgba(103, 232, 249, 0.4);
-            box-shadow: 0 8px 22px rgba(8, 145, 178, 0.3);
-        }
-        .title-sub {
-            font-weight: 700;
-            font-style: italic;
-            background: rgba(30, 41, 59, 0.65);
-            border: 1px solid rgba(148, 163, 184, 0.36);
-        }
-        .step-media {
-            display: grid;
-            gap: 0.85rem;
-            grid-template-columns: 1fr;
-            margin: 0.85rem 0 1.1rem;
-        }
-        .step-media.two {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .step-media.four {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .step-img-wrap {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: zoom-in;
-        }
-        .step-media img {
-            width: 100%;
-            height: clamp(160px, 22vw, 235px);
-            object-fit: cover;
-            display: block;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-        }
-        .step-img-wrap::after {
-            content: "Click to Enlarge";
-            position: absolute;
-            inset: auto 0 0 0;
-            padding: 0.55rem;
-            font-size: 0.82rem;
-            letter-spacing: 0.03em;
-            color: #e2e8f0;
-            background: linear-gradient(180deg, rgba(0,0,0,0), rgba(2,6,23,0.88));
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .step-img-wrap:hover::after { opacity: 1; }
-        .step-card p {
-            margin: 0.65rem 0 0;
-            color: #cbd5e1;
-            line-height: 1.7;
-            font-size: clamp(0.95rem, 1.45vw, 1.02rem);
-            text-align: left;
-        }
-        .img-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.84);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            z-index: 1000;
-        }
-        .img-modal.show { display: flex; }
-        .img-modal img {
-            max-width: min(1100px, 96vw);
-            max-height: 90vh;
-            border-radius: 12px;
-            border: 1px solid rgba(148, 163, 184, 0.5);
-        }
-        @media (max-width: 780px) {
-            .step-media.two, .step-media.four { grid-template-columns: 1fr; }
-            .step-card p { font-size: 0.93rem; }
-        }
-    </style>
     <script src="main.js" defer></script>
 </head>
-<body class="homepage" id="top">
+<body class="homepage service-step-page printing-page" id="top">
     <header class="hp-header">
         <div class="hp-header-inner">
-            <a href="Homepage.html" class="hp-logo">MK Print Solutions</a>
+            <a href="index.html" class="hp-logo">MK Print Solutions</a>
             <div class="hp-search-wrap">
                 <input type="search" class="hp-search" placeholder="Search" aria-label="Search">
                 <span class="hp-search-icon" aria-hidden="true">&#128269;</span>
@@ -142,7 +24,7 @@
     </header>
         <nav class="hp-nav">
         <div class="hp-nav-inner hp-nav-main">
-            <a href="Homepage.html" class="hp-main-link">Home</a>
+            <a href="index.html" class="hp-main-link">Home</a>
             <a href="AboutUs.html" class="hp-main-link">About Us</a>
             <div class="hp-menu-item hp-menu-dropdown">
                 <a href="javascript:void(0)" class="hp-main-link hp-main-link-active" aria-haspopup="true" aria-expanded="false">Services</a>
@@ -165,7 +47,7 @@
                     </a>
                 </div>
             </div>
-            <a href="DashboardNew.html" class="hp-main-link">Dashboard</a>
+            <a href="Dashboard.html" class="hp-main-link">Dashboard</a>
             <a href="ContactUs.html" class="hp-main-link">Contact Us</a>
         </div>
     </nav>
@@ -185,10 +67,10 @@
                 <div class="footer-sub">Modular publication workflow &bull; Front-end prototype</div>
             </div>
                         <div class="footer-links">
-                <a href="Homepage.html">Home</a>
+                <a href="index.html">Home</a>
                 <a href="AboutUs.html">About Us</a>
                 <a href="Services.html">Services</a>
-                <a href="DashboardNew.html">Dashboard</a>
+                <a href="Dashboard.html">Dashboard</a>
                 <a href="ContactUs.html">Contact Us</a>
             </div>
             <div class="footer-contact">
@@ -200,63 +82,12 @@
         <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
     <div class="img-modal" id="imgModal"><img id="imgModalPhoto" alt="Expanded image"></div>
-    <script>
-        (function () {
-            var steps = [
-                { title: "Printing", layout: "one", images: ["images/sheet 2.png"], paragraphs: ["At MK Print Solutions, our printing facility is equipped with a versatile combination of digital, sheetfed offset, and web offset machines, enabling us to handle diverse printing requirements with speed, flexibility, and consistent quality. Our integrated production setup allows seamless movement of jobs across machines, ensuring efficient execution and reduced turnaround time.", "We follow stringent quality control measures at every stage of production, using advanced tools such as spectrophotometers and densitometers to monitor color accuracy and maintain consistency throughout the print run. Our experienced team ensures precise registration, sharp image reproduction, and uniform ink distribution for superior output.", "We are committed to continuous upgradation of our machinery and processes, adopting modern, energy-efficient, and environmentally responsible printing technologies. With a focus on quality, reliability, and timely delivery, MK Print Solutions ensures premium printing solutions that meet the highest industry standards."] },
-                { title: "Web", layout: "two", images: ["images/web 1.png", "images/web 2.png"], paragraphs: ["At MK Print Solutions, our web offset printing facility is designed for high-volume production with exceptional speed and consistent quality. This process is ideal for large print runs such as books, magazines, and newspapers, ensuring cost-effective and efficient execution. Using advanced heat-set and cold-set web offset machines, we deliver sharp images, uniform ink distribution, and excellent print clarity.", "Our automated systems enable continuous printing with precise registration and color consistency throughout the run. With real-time quality monitoring using densitometers and spectrophotometers, we maintain strict control over print standards. The process also supports faster drying and finishing, allowing quick turnaround times for bulk orders.", "With optimized workflows, minimal wastage, and eco-friendly practices, MK Print Solutions ensures reliable, high-speed web offset printing solutions that meet professional publishing requirements."] },
-                { title: "Sheet Fed", layout: "four", images: ["images/sheet 1.png", "images/sheet 2.png", "images/sheet 3.png", "images/sheet 4.png"], paragraphs: ["At MK Print Solutions, our sheetfed offset printing services are designed to deliver superior print quality with precision and consistency. Ideal for medium to high-volume jobs such as books, covers, brochures, and high-end publications, this process ensures sharp text, vibrant colors, and excellent detail reproduction.", "Our advanced sheetfed machines support a wide range of paper types and sizes, offering flexibility for diverse printing requirements. With accurate color management, proper registration, and controlled ink density, we achieve uniform results across the entire print run. We use modern quality control tools to monitor output and maintain industry standards.", "With efficient setup, reduced wastage, and quick turnaround, MK Print Solutions ensures high-quality sheetfed offset printing that meets professional publishing and commercial printing needs."] }
-            ];
-
-            var card = document.getElementById("stepCard");
-            var modal = document.getElementById("imgModal");
-            var modalPhoto = document.getElementById("imgModalPhoto");
-            if (!card || !modal || !modalPhoto) return;
-
-            var index = 0;
-            var locked = false;
-
-            function mediaClass(layout) { return layout === "four" ? "step-media four" : layout === "two" ? "step-media two" : "step-media"; }
-
-            function render(i) {
-                var step = steps[i];
-                var titleClass = i === 0 ? "title-main" : "title-sub";
-                var images = step.images.map(function (src) {
-                    return '<figure class="step-img-wrap"><img src="' + src + '" alt="' + step.title + '" loading="lazy"></figure>';
-                }).join("");
-                var paragraphs = step.paragraphs.map(function (text) {
-                    return "<p>" + text + "</p>";
-                }).join("");
-                card.innerHTML = "<h2 class='" + titleClass + "'>" + step.title + "</h2><div class='" + mediaClass(step.layout) + "'>" + images + "</div>" + paragraphs;
-            }
-
-            function nextStep() {
-                if (locked) return;
-                locked = true;
-                card.classList.add("is-exit");
-                setTimeout(function () {
-                    index = (index + 1) % steps.length;
-                    render(index);
-                    card.classList.remove("is-exit");
-                    locked = false;
-                }, 280);
-            }
-
-            card.addEventListener("click", function () { nextStep(); });
-            card.addEventListener("click", function (e) {
-                var img = e.target.closest(".step-img-wrap img");
-                if (!img) return;
-                e.stopPropagation();
-                modalPhoto.src = img.src;
-                modal.classList.add("show");
-            }, true);
-
-            modal.addEventListener("click", function () { modal.classList.remove("show"); });
-            render(index);
-        })();
-    </script>
 </body>
 </html>
+
+
+
+
 
 
 

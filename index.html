@@ -26,9 +26,9 @@
         </div>
     </header>
 
-    <nav class="hp-nav">
+        <nav class="hp-nav">
         <div class="hp-nav-inner hp-nav-main">
-            <a href="Homepage.html" class="hp-main-link hp-main-link-active">Home</a>
+            <a href="index.html" class="hp-main-link hp-main-link-active">Home</a>
             <a href="AboutUs.html" class="hp-main-link">About Us</a>
             <div class="hp-menu-item hp-menu-dropdown">
                 <a href="javascript:void(0)" class="hp-main-link" aria-haspopup="true" aria-expanded="false">Services</a>
@@ -51,7 +51,7 @@
                     </a>
                 </div>
             </div>
-            <a href="DashboardNew.html" class="hp-main-link">Dashboard</a>
+            <a href="Dashboard.html" class="hp-main-link">Dashboard</a>
             <a href="ContactUs.html" class="hp-main-link">Contact Us</a>
         </div>
     </nav>
@@ -163,9 +163,12 @@
                 <div class="footer-brand">MK Print Solutions</div>
                 <div class="footer-sub">Modular publication workflow - Front-end prototype</div>
             </div>
-            <div class="footer-links">
+                                    <div class="footer-links">
                 <a href="index.html">Home</a>
-                <a href="DashboardNew.html">Dashboard</a>
+                <a href="AboutUs.html">About Us</a>
+                <a href="Services.html">Services</a>
+                <a href="Dashboard.html">Dashboard</a>
+                <a href="ContactUs.html">Contact Us</a>
                 <a href="Login.html">Sign in</a>
                 <a href="#top">Back to top</a>
             </div>
@@ -177,101 +180,20 @@
         </div>
         <div class="footer-bottom">&copy; 2026 MK Print Solutions Created by: Mandal & Karmakar</div>
     </footer>
-
-    <script>
-        (function() {
-            var btn = document.querySelector('.hp-promo-copy');
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    if (navigator.clipboard) navigator.clipboard.writeText('SAVE5');
-                    btn.textContent = '\u2713';
-                    setTimeout(function() { btn.textContent = '\uD83D\uDCCB'; }, 1500);
-                });
-            }
-        })();
-
-        (function() {
-            var slider = document.querySelector('.hp-clients-slider');
-            if (!slider) return;
-            var track = slider.querySelector('.hp-clients-track');
-            var slides = slider.querySelectorAll('.hp-client-slide');
-            var prevBtn = slider.querySelector('.hp-slider-prev');
-            var nextBtn = slider.querySelector('.hp-slider-next');
-            var dotsEl = slider.querySelector('.hp-slider-dots');
-            var total = slides.length;
-            var index = 0;
-            var autoTimer;
-
-            function move() {
-                track.style.transform = 'translateX(-' + (index * 100) + '%)';
-                var dots = dotsEl.querySelectorAll('.hp-slider-dot');
-                dots.forEach(function(d, i) { d.classList.toggle('active', i === index); });
-            }
-
-            function next() {
-                index = (index + 1) % total;
-                move();
-                resetAuto();
-            }
-
-            function prev() {
-                index = index === 0 ? total - 1 : index - 1;
-                move();
-                resetAuto();
-            }
-
-            function resetAuto() {
-                clearInterval(autoTimer);
-                autoTimer = setInterval(next, 5000);
-            }
-
-            for (var i = 0; i < total; i++) {
-                var dot = document.createElement('button');
-                dot.type = 'button';
-                dot.className = 'hp-slider-dot' + (i === 0 ? ' active' : '');
-                dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-                (function(j) {
-                    dot.addEventListener('click', function() {
-                        index = j;
-                        move();
-                        resetAuto();
-                    });
-                })(i);
-                dotsEl.appendChild(dot);
-            }
-
-            if (prevBtn) prevBtn.addEventListener('click', prev);
-            if (nextBtn) nextBtn.addEventListener('click', next);
-            move();
-            autoTimer = setInterval(next, 5000);
-        })();
-
-        
-    const follower = document.querySelector('.cursor-follower');
-    document.addEventListener('mousemove', (e) => {
-        if (follower) {
-            follower.style.left = e.clientX + 'px';
-            follower.style.top = e.clientY + 'px';
-        }
-    });
-
-        (function() {
-            var follower = document.createElement('div');
-            follower.className = 'cursor-follower';
-            document.body.appendChild(follower);
-
-            document.addEventListener('mousemove', function(e) {
-                follower.style.left = e.clientX + 'px';
-                follower.style.top = e.clientY + 'px';
-            });
-        })();
-
-    </script>
 </body>
 
 <div class="cursor-follower"></div>
 
 </html>
+
+
+
+
+
+
+
+
+
 
 
 

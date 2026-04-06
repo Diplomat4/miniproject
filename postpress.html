@@ -5,124 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post Press | MK Print Solutions</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root { --primary: #ea580c; }
-        .category-header {
-            background: linear-gradient(135deg, #312010, #0f172a);
-            border-bottom: 1px solid var(--border);
-            padding: 3rem 1rem 2rem;
-        }
-        .step-shell {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem 1rem;
-            background: linear-gradient(180deg, #111827, #0f172a);
-        }
-        .step-card {
-            width: min(980px, 100%);
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(148, 163, 184, 0.26);
-            border-radius: 16px;
-            padding: clamp(1rem, 2.2vw, 1.8rem);
-            text-align: center;
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
-            cursor: pointer;
-            transform: translateY(0);
-            opacity: 1;
-            transition: transform 0.35s ease, opacity 0.35s ease, box-shadow 0.25s ease;
-        }
-        .step-card:hover { box-shadow: 0 24px 48px rgba(0, 0, 0, 0.42); }
-        .step-card.is-exit { opacity: 0; transform: translateY(-14px); }
-        .step-card h2 {
-            margin: 0 0 1rem;
-            font-size: clamp(1.4rem, 2.8vw, 2rem);
-            color: #e2e8f0;
-            display: inline-block;
-            padding: 0.35rem 0.85rem 0.45rem;
-            border-radius: 10px;
-        }
-        .title-main {
-            font-weight: 900;
-            letter-spacing: 0.02em;
-            background: rgba(234, 88, 12, 0.24);
-            border: 1px solid rgba(251, 146, 60, 0.42);
-            box-shadow: 0 8px 22px rgba(194, 65, 12, 0.28);
-        }
-        .title-sub {
-            font-weight: 700;
-            font-style: italic;
-            background: rgba(30, 41, 59, 0.65);
-            border: 1px solid rgba(148, 163, 184, 0.36);
-        }
-        .step-media {
-            display: grid;
-            gap: 0.85rem;
-            grid-template-columns: 1fr;
-            margin: 0.85rem 0 1.1rem;
-        }
-        .step-media.three {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-        .step-img-wrap {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: zoom-in;
-        }
-        .step-media img {
-            width: 100%;
-            height: clamp(160px, 21vw, 230px);
-            object-fit: cover;
-            display: block;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-        }
-        .step-img-wrap::after {
-            content: "Click to Enlarge";
-            position: absolute;
-            inset: auto 0 0 0;
-            padding: 0.55rem;
-            font-size: 0.82rem;
-            letter-spacing: 0.03em;
-            color: #e2e8f0;
-            background: linear-gradient(180deg, rgba(0,0,0,0), rgba(2,6,23,0.88));
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .step-img-wrap:hover::after { opacity: 1; }
-        .step-card p {
-            margin: 0.65rem 0 0;
-            color: #cbd5e1;
-            line-height: 1.7;
-            font-size: clamp(0.95rem, 1.45vw, 1.02rem);
-            text-align: left;
-        }
-        .img-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.84);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            z-index: 1000;
-        }
-        .img-modal.show { display: flex; }
-        .img-modal img {
-            max-width: min(1100px, 96vw);
-            max-height: 90vh;
-            border-radius: 12px;
-            border: 1px solid rgba(148, 163, 184, 0.5);
-        }
-        @media (max-width: 900px) {
-            .step-media.three { grid-template-columns: 1fr; }
-            .step-card p { font-size: 0.93rem; }
-        }
-    </style>
     <script src="main.js" defer></script>
 </head>
-<body class="homepage" id="top">
+<body class="homepage service-step-page postpress-page" id="top">
     <header class="hp-header">
         <div class="hp-header-inner">
             <a href="index.html" class="hp-logo">MK Print Solutions</a>
@@ -139,7 +24,7 @@
     </header>
     <nav class="hp-nav">
         <div class="hp-nav-inner hp-nav-main">
-            <a href="Homepage.html" class="hp-main-link">Home</a>
+            <a href="index.html" class="hp-main-link">Home</a>
             <a href="AboutUs.html" class="hp-main-link">About Us</a>
             <div class="hp-menu-item hp-menu-dropdown">
                 <a href="javascript:void(0)" class="hp-main-link hp-main-link-active" aria-haspopup="true" aria-expanded="false">Services</a>
@@ -150,7 +35,7 @@
                     <a href="Binding.html" class="hp-dropdown-link" role="menuitem"><span>Post-press Stage</span><span class="hp-dropdown-arrow" aria-hidden="true">&rsaquo;</span></a>
                 </div>
             </div>
-            <a href="DashboardNew.html" class="hp-main-link">Dashboard</a>
+            <a href="Dashboard.html" class="hp-main-link">Dashboard</a>
             <a href="ContactUs.html" class="hp-main-link">Contact Us</a>
         </div>
     </nav>
@@ -186,63 +71,12 @@
     </footer>
 
     <div class="img-modal" id="imgModal"><img id="imgModalPhoto" alt="Expanded image"></div>
-    <script>
-        (function () {
-            var steps = [
-                { title: "Post Press", layout: "one", images: ["images/BINDING IMAGE 1.png"], paragraphs: ["At MK Print Solutions, our post press operations transform printed sheets into finished, high-quality products ready for end use. We offer a complete range of finishing and binding services to ensure durability, functionality, and visual appeal. Our process includes precision cutting, folding, collating, gathering, and binding methods such as perfect binding, saddle stitching, and section sewing for books and publications.", "We provide a wide variety of finishing options including lamination (gloss, matte, and thermal), UV and spot UV coating, varnishing, hot foil stamping, embossing, debossing, creasing, and die cutting to enhance the overall look and feel of the product. Additional services such as index cutting, edge gilding, tipping, and screen printing are also available to meet specialized requirements.", "With modern equipment, strict quality control, and attention to detail, we ensure consistency and excellence in every job. Our efficient workflow enables quick turnaround times, making MK Print Solutions a reliable partner for complete post press solutions tailored to diverse customer needs."] },
-                { title: "Binding", layout: "three", images: ["images/BINDING IMAGE 1.png", "images/BINDING IMAGE 2.png", "images/BINDING IMAGE 3.png"], paragraphs: ["At MK Print Solutions, we offer a wide range of binding solutions to ensure durability, functionality, and a professional finish for every publication. Our services include perfect binding, saddle stitching, section sewing, case binding (hardcover), and spiral or wiro binding, catering to different book formats and usage requirements.", "We ensure strong adhesion, precise alignment, and clean finishing for long-lasting results. Our binding process is supported by advanced machinery and strict quality checks to maintain consistency in trimming, spine formation, and overall presentation. We also provide options for cover lamination, embossing, foil stamping, and other enhancements to improve the final appearance.", "With attention to detail, efficient workflow, and quick turnaround, MK Print Solutions delivers high-quality binding solutions that meet professional publishing standards and customer expectations."] },
-                { title: "Finishing Operations", layout: "three", images: ["images/FINISHING IMAGE 1.png", "images/FINISHING IMAGE 2.png", "images/FINISHING IMAGE 3.png"], paragraphs: ["At MK Print Solutions, our finishing operations ensure that every printed product is refined to perfection before delivery. We provide a comprehensive range of finishing services including precision trimming, folding, creasing, die cutting, lamination (gloss, matte, and thermal), UV and spot UV coating, embossing, debossing, and foil stamping to enhance durability and visual appeal.", "Our streamlined workflow covers collating, gathering, inserting, and detailed quality checks at every stage to maintain accuracy and consistency. With advanced machinery and skilled handling, we ensure clean finishing, proper alignment, and professional presentation.", "Focused on efficiency and quality, MK Print Solutions delivers reliable finishing operations with quick turnaround, minimal wastage, and results that meet the highest industry standards."] }
-            ];
-
-            var card = document.getElementById("stepCard");
-            var modal = document.getElementById("imgModal");
-            var modalPhoto = document.getElementById("imgModalPhoto");
-            if (!card || !modal || !modalPhoto) return;
-
-            var index = 0;
-            var locked = false;
-
-            function mediaClass(layout) { return layout === "three" ? "step-media three" : "step-media"; }
-
-            function render(i) {
-                var step = steps[i];
-                var titleClass = i === 0 ? "title-main" : "title-sub";
-                var images = step.images.map(function (src) {
-                    return '<figure class="step-img-wrap"><img src="' + src + '" alt="' + step.title + '" loading="lazy"></figure>';
-                }).join("");
-                var paragraphs = step.paragraphs.map(function (text) {
-                    return "<p>" + text + "</p>";
-                }).join("");
-                card.innerHTML = "<h2 class='" + titleClass + "'>" + step.title + "</h2><div class='" + mediaClass(step.layout) + "'>" + images + "</div>" + paragraphs;
-            }
-
-            function nextStep() {
-                if (locked) return;
-                locked = true;
-                card.classList.add("is-exit");
-                setTimeout(function () {
-                    index = (index + 1) % steps.length;
-                    render(index);
-                    card.classList.remove("is-exit");
-                    locked = false;
-                }, 280);
-            }
-
-            card.addEventListener("click", function () { nextStep(); });
-            card.addEventListener("click", function (e) {
-                var img = e.target.closest(".step-img-wrap img");
-                if (!img) return;
-                e.stopPropagation();
-                modalPhoto.src = img.src;
-                modal.classList.add("show");
-            }, true);
-
-            modal.addEventListener("click", function () { modal.classList.remove("show"); });
-            render(index);
-        })();
-    </script>
 </body>
 </html>
+
+
+
+
 
 
 
